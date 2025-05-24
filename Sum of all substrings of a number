@@ -1,0 +1,37 @@
+
+# JAVA CODE
+
+class Solution {
+    public static int sumSubstrings(String s) {
+        // code here
+       int n = s.length();
+       long sum = 0;
+       long prev = 0;
+       for(int i= 0; i< n; i++){
+           int num = s.charAt(i) - '0';
+           prev = prev * 10 + (long)num * (i + 1);
+           sum += prev;
+       }
+       return (int) sum;
+    }
+}
+
+# C++ CODE
+
+class Solution {
+  public:
+    int sumSubstrings(string &s) {
+        // code here
+        int n = s.length();
+    long long sum = 0;
+    long long prev = 0;
+
+    for (int i = 0; i < n; i++) {
+        int num = s[i] - '0';
+        prev = prev * 10 + (long long)num * (i + 1);
+        sum += prev;
+    }
+
+    return sum;
+    }
+};
