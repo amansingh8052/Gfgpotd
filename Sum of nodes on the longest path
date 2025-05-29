@@ -1,0 +1,69 @@
+# JAVA CODE
+
+class Solution {
+    class Result {
+        int maxLen;
+        int maxSum;
+        Result(int maxLen, int maxSum){
+            this.maxLen = maxLen;
+            this.maxSum = maxSum;
+        }
+    }
+    
+    public int sumOfLongRootToLeafPath(Node root) {
+        // code here
+        Result res = helper(root);
+        return res.maxSum;
+    }
+    
+    private Result helper(Node node){
+        if(node == null ){
+            return new Result(0,0);
+        }
+        Result left = helper(node.left);
+        Result right = helper(node.right);
+        if(left.maxLen > right.maxLen){
+            return new Result(left.maxLen + 1, left.maxSum + node.data);
+        }else if(right.maxLen > left.maxLen) {
+            return new Result(right.maxLen + 1,right.maxSum + node.data);
+        }else {
+            int maxSum = Math.max(left.maxSum, right.maxSum);
+            return new Result(left.maxLen + 1, maxSum + node.data);
+        }
+    }
+}
+
+# C++ CODE 
+
+class Solution {
+public:
+    struct Result {
+        int maxLen;
+        int maxSum;
+        Result(int len, int sum) : maxLen(len), maxSum(sum) {}
+    };
+
+    int sumOfLongRootToLeafPath(Node* root) {
+        Result res = helper(root);
+        return res.maxSum;
+    }
+
+private:
+    Result helper(Node* node) {
+        if (node == nullptr) {
+            return Result(0, 0);
+        }
+
+        Result left = helper(node->left);
+        Result right = helper(node->right);
+
+        if (left.maxLen > right.maxLen) {
+            return Result(left.maxLen + 1, left.maxSum + node->data);
+        } else if (right.maxLen > left.maxLen) {
+            return Result(right.maxLen + 1, right.maxSum + node->data);
+        } else {
+            int maxSum = std::max(left.maxSum, right.maxSum);
+            return Result(left.maxLen + 1, maxSum + node->data);
+        }
+    }
+};
