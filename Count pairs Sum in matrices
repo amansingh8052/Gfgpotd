@@ -1,0 +1,82 @@
+# JAVA CODE 
+class Solution {
+    int countPairs(int[][] mat1, int[][] mat2, int x) {
+        // code here
+        int n = mat1.length;
+        List<Integer> list1 = new ArrayList<>();
+        List<Integer> list2 = new ArrayList<>();
+        
+        for(int[] row : mat1)
+        for(int val : row)
+        list1.add(val);
+        
+        for(int[] row : mat2)
+        for(int val : row)
+        list2.add(val);
+        
+        Collections.sort(list2);
+        
+        int count= 0;
+        for(int a : list1) {
+            int target = x-a;
+            int lower = lowerBound(list2,target);
+            int upper = upperBound(list2, target);
+            count += (upper - lower);
+        }
+        return count;
+    }
+    private int lowerBound(List<Integer> list, int target){
+        int low = 0, high = list.size();
+        while(low<high){
+            int mid = (low + high)/2;
+            if(list.get(mid) < target)
+            low = mid+1;
+            else
+            high = mid;
+        }
+        return low;
+    }
+    
+    private int upperBound(List<Integer> list, int target) {
+        int low = 0, high = list.size();
+        while(low < high){
+            int mid= (low+high)/2;
+            if(list.get(mid) <= target)
+            low = mid+1;
+            else
+            high = mid;
+        }
+        return low;
+    }
+}
+
+# C++ CODE 
+class Solution {
+  public:
+    int countPairs(vector<vector<int>> &mat1, vector<vector<int>> &mat2, int x) {
+        int n = mat1.size();
+        vector<int> list1, list2;
+
+        for (int i = 0; i < n; ++i) {
+            for (int j = 0; j < n; ++j) {
+                list1.push_back(mat1[i][j]);
+                list2.push_back(mat2[i][j]);
+            }
+        }
+
+        sort(list2.begin(), list2.end());
+
+        int count = 0;
+
+        for (int a : list1) {
+            int target = x - a;
+
+            auto low = lower_bound(list2.begin(), list2.end(), target);
+            auto high = upper_bound(list2.begin(), list2.end(), target);
+
+            count += (high - low);
+        }
+
+        return count;
+    }
+};
