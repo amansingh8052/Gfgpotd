@@ -1,0 +1,38 @@
+# JAVA CODE 
+
+class Solution {
+    public boolean isDeadEnd(Node root) {
+        // Code here.
+        return checkDeadEnd(root, 1, Integer.MAX_VALUE);
+    }
+    
+    private boolean checkDeadEnd(Node node, int min, int max){
+        if(node == null) return false;
+        if(node.left == null && node.right == null){
+            if(min == max) return true;
+        }
+        return checkDeadEnd(node.left,min,node.data -1) || checkDeadEnd(node.right, node.data + 1, max);
+    }
+}
+
+# C++ CODE 
+
+class Solution {
+  public:
+    bool checkDeadEnd(Node* node, int min, int max) {
+        if (!node) return false;
+
+        // If it's a leaf node
+        if (!node->left && !node->right) {
+            if (min == max) return true;
+        }
+
+        // Recur for left and right subtrees with updated ranges
+        return checkDeadEnd(node->left, min, node->data - 1) ||
+               checkDeadEnd(node->right, node->data + 1, max);
+    }
+
+    bool isDeadEnd(Node *root) {
+        return checkDeadEnd(root, 1, INT_MAX);
+    }
+};
