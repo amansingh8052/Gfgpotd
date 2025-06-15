@@ -1,0 +1,69 @@
+# JAVA CODE 
+
+class Solution {
+    int smallestDivisor(int[] arr, int k) {
+        // Code here
+        int left = 1, right = getMax(arr);
+        int answer = right;
+        while(left <= right){
+            int mid = left + (right - left)/2;
+            int sum = computeSum(arr,mid);
+            if(sum <= k){
+                answer = mid;
+                right = mid-1;
+            }else {
+                left = mid+1;
+            }
+        }
+        return answer;
+    }
+    
+    private int getMax(int[] arr){
+        int max = arr[0];
+        for(int num : arr){
+            if(num > max){
+                max = num;
+            }
+        }
+        return max;
+    }
+    
+    private int computeSum(int[] arr, int divisor){
+        int sum = 0;
+        for(int num : arr){
+            sum += (num + divisor -1)/divisor;
+        }
+        return sum;
+    }
+}
+C++ CODE
+
+class Solution {
+  public:
+    int smallestDivisor(vector<int>& arr, int k) {
+        int left = 1, right = *max_element(arr.begin(), arr.end());
+        int answer = right;
+
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            int sum = computeSum(arr, mid);
+
+            if (sum <= k) {
+                answer = mid;      // valid candidate, try smaller
+                right = mid - 1;
+            } else {
+                left = mid + 1;    // need larger divisor
+            }
+        }
+        return answer;
+    }
+
+  private:
+    int computeSum(const vector<int>& arr, int divisor) {
+        int sum = 0;
+        for (int num : arr) {
+            sum += (num + divisor - 1) / divisor; // Equivalent to ceil(num / divisor)
+        }
+        return sum;
+    }
+};
