@@ -1,0 +1,63 @@
+# JAVA CODE
+class Solution {
+    public boolean validgroup(int[] arr, int k) {
+        if (arr.length % k != 0) return false;
+
+        TreeMap<Integer, Integer> freq = new TreeMap<>();
+        for (int num : arr) {
+            freq.put(num, freq.getOrDefault(num, 0) + 1);
+        }
+
+        while (!freq.isEmpty()) {
+            int start = freq.firstKey();
+            int count = freq.get(start);
+
+            for (int i = 0; i < k; i++) {
+                int current = start + i;
+                if (!freq.containsKey(current)) return false;
+                
+                freq.put(current, freq.get(current) - count);
+                if (freq.get(current) == 0) {
+                    freq.remove(current);
+                } else if (freq.get(current) < 0) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+}
+
+#C++ CODE 
+
+class Solution {
+public:
+    bool validgroup(vector<int>& arr, int k) {
+        int n = arr.size();
+        if (n % k != 0) return false;
+
+        map<int, int> freq;
+        for (int num : arr) {
+            freq[num]++;
+        }
+
+        while (!freq.empty()) {
+            int start = freq.begin()->first;  // Smallest available number
+            int count = freq[start];  // How many times this number appears
+
+            // Try to build a group of k consecutive numbers
+            for (int i = 0; i < k; ++i) {
+                int current = start + i;
+                if (freq[current] < count) return false;
+
+                freq[current] -= count;
+                if (freq[current] == 0) {
+                    freq.erase(current);
+                }
+            }
+        }
+
+        return true;
+    }
+};
