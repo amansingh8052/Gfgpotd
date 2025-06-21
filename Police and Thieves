@@ -1,0 +1,73 @@
+# JAVA CODE
+
+class Solution {
+    public int catchThieves(char[] arr, int k) {
+        List<Integer> police = new ArrayList<>();
+        List<Integer> thieves = new ArrayList<>();
+
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i] == 'P') {
+                police.add(i);
+            } else if (arr[i] == 'T') {
+                thieves.add(i);
+            }
+        }
+
+        int i = 0, j = 0, count = 0;
+
+        while (i < police.size() && j < thieves.size()) {
+            if (Math.abs(police.get(i) - thieves.get(j)) <= k) {
+                count++;
+                i++;
+                j++;
+            } else if (police.get(i) < thieves.get(j)) {
+                i++;
+            } else {
+                j++;
+            }
+        }
+
+        return count;
+    }
+}
+
+
+#C++ CODE
+
+
+class Solution {
+  public:
+    int catchThieves(vector<char> &arr, int k) {
+        queue<int> police;
+        queue<int> thieves;
+        int n = arr.size();
+        int count = 0;
+
+        // Step 1: Traverse the array and collect indices
+        for (int i = 0; i < n; i++) {
+            if (arr[i] == 'P') {
+                police.push(i);
+            } else if (arr[i] == 'T') {
+                thieves.push(i);
+            }
+        }
+
+        // Step 2: Try to match thieves and police
+        while (!police.empty() && !thieves.empty()) {
+            int p = police.front();
+            int t = thieves.front();
+
+            if (abs(p - t) <= k) {
+                count++;
+                police.pop();
+                thieves.pop();
+            } else if (t < p) {
+                thieves.pop();
+            } else {
+                police.pop();
+            }
+        }
+
+        return count;
+    }
+};
