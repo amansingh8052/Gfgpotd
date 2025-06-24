@@ -1,0 +1,62 @@
+#JAVA CODE
+
+class Solution {
+    boolean sameFreq(String s) {
+        Map<Character, Integer> freqMap = new HashMap<>();
+        for (char c : s.toCharArray()) {
+            freqMap.put(c, freqMap.getOrDefault(c, 0) + 1);
+        }
+        Map<Integer, Integer> countFreq = new HashMap<>();
+        for (int freq : freqMap.values()) {
+            countFreq.put(freq, countFreq.getOrDefault(freq, 0) + 1);
+        }
+        if (countFreq.size() == 1) return true;
+        if (countFreq.size() > 2) return false;
+        List<Map.Entry<Integer, Integer>> entries = new ArrayList<>(countFreq.entrySet());
+        int f1 = entries.get(0).getKey(), c1 = entries.get(0).getValue();
+        int f2 = entries.get(1).getKey(), c2 = entries.get(1).getValue();
+
+        return (f1 == 1 && c1 == 1) || (f2 == 1 && c2 == 1) ||
+               (Math.abs(f1 - f2) == 1 && ((f1 > f2 && c1 == 1) || (f2 > f1 && c2 == 1)));
+    }
+}
+
+C++ CODE 
+class Solution {
+  public:
+    bool sameFreq(string& s) {
+        unordered_map<char, int> freq;
+
+        // Step 1: Count frequency of each character
+        for (char c : s) {
+            freq[c]++;
+        }
+
+        unordered_map<int, int> freqCount;
+
+        // Step 2: Count how many characters have each frequency
+        for (auto& pair : freq) {
+            freqCount[pair.second]++;
+        }
+
+        // Case 1: All frequencies are the same
+        if (freqCount.size() == 1) return true;
+
+        // Case 2: More than 2 different frequencies → not possible
+        if (freqCount.size() > 2) return false;
+
+        // Extract the two frequencies and their counts
+        auto it = freqCount.begin();
+        int f1 = it->first, c1 = it->second;
+        it++;
+        int f2 = it->first, c2 = it->second;
+
+        // Case 3: One of the frequencies is 1 and it occurs only once
+        if ((f1 == 1 && c1 == 1) || (f2 == 1 && c2 == 1)) return true;
+
+        // Case 4: One frequency is greater by 1 and occurs only once
+        if ((abs(f1 - f2) == 1) && ((f1 > f2 && c1 == 1) || (f2 > f1 && c2 == 1))) return true;
+
+        return false;
+    }
+};
