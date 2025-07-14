@@ -1,0 +1,79 @@
+# JAVA CODE 
+
+class Solution {
+    public int cuts(String s) {
+        int n = s.length();
+        Set<String> powerOf5 = new HashSet<>();
+        
+        // Precompute powers of 5 in binary
+        long num = 1;
+        while (num <= Long.MAX_VALUE) {
+            powerOf5.add(Long.toBinaryString(num));
+            if (Long.MAX_VALUE / 5 < num) break; // Prevent overflow
+            num *= 5;
+        }
+
+        int[] dp = new int[n + 1];
+        Arrays.fill(dp, Integer.MAX_VALUE);
+        dp[0] = 0;
+
+        // DP loop
+        for (int i = 1; i <= n; i++) {
+            for (int j = 0; j < i; j++) {
+                String sub = s.substring(j, i);
+                if (sub.charAt(0) != '0' && powerOf5.contains(sub)) {
+                    if (dp[j] != Integer.MAX_VALUE) {
+                        dp[i] = Math.min(dp[i], dp[j] + 1);
+                    }
+                }
+            }
+        }
+
+        return dp[n] == Integer.MAX_VALUE ? -1 : dp[n];
+    }
+}
+
+
+# C++ CODE
+
+class Solution {
+public:
+    int cuts(string s) {
+        int n = s.size();
+        unordered_set<string> powerOf5;
+
+        // Precompute binary strings for powers of 5 up to 2^50
+        long long num = 1;
+        while (num <= (1LL << 50)) {
+            powerOf5.insert(toBinary(num));
+            num *= 5;
+        }
+
+        vector<int> dp(n + 1, INT_MAX);
+        dp[0] = 0;
+
+        // DP logic
+        for (int i = 1; i <= n; ++i) {
+            for (int j = 0; j < i; ++j) {
+                string sub = s.substr(j, i - j);
+                if (sub[0] != '0' && powerOf5.count(sub)) {
+                    if (dp[j] != INT_MAX) {
+                        dp[i] = min(dp[i], dp[j] + 1);
+                    }
+                }
+            }
+        }
+
+        return dp[n] == INT_MAX ? -1 : dp[n];
+    }
+
+private:
+    string toBinary(long long num) {
+        string res = "";
+        while (num > 0) {
+            res = char('0' + (num % 2)) + res;
+            num /= 2;
+        }
+        return res;
+    }
+};
