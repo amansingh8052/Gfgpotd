@@ -1,0 +1,30 @@
+# JAVA CODE 
+
+class Solution {
+    public boolean divby13(String s) {
+        int remainder = 0;
+
+        for (int i = 0; i < s.length(); i++) {
+            int digit = s.charAt(i) - '0';
+            remainder = (remainder * 10 + digit) % 13;
+        }
+
+        return remainder == 0;
+    }
+}
+
+#C++ CODE 
+
+class Solution {
+  public:
+    bool divby13(string &s) {
+        int remainder = 0;
+
+        for (char ch : s) {
+            int digit = ch - '0';
+            remainder = (remainder * 10 + digit) % 13;
+        }
+
+        return remainder == 0;
+    }
+};
