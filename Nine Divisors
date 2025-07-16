@@ -1,0 +1,111 @@
+# JAVA CODE 
+
+class Solution {
+    // Function to generate primes up to sqrt(n)
+    public static List<Integer> sieve(int n) {
+        boolean[] isPrime = new boolean[n + 1];
+        Arrays.fill(isPrime, true);
+        isPrime[0] = isPrime[1] = false;
+
+        for (int i = 2; i * i <= n; i++) {
+            if (isPrime[i]) {
+                for (int j = i * i; j <= n; j += i)
+                    isPrime[j] = false;
+            }
+        }
+
+        List<Integer> primes = new ArrayList<>();
+        for (int i = 2; i <= n; i++)
+            if (isPrime[i])
+                primes.add(i);
+
+        return primes;
+    }
+
+    public static int countNumbers(int n) {
+        List<Integer> primes = sieve((int)Math.sqrt(n) + 1);
+        int count = 0;
+
+        // Case 1: Numbers of the form p^8
+        for (int p : primes) {
+            long num = (long)p * p * p * p * p * p * p * p;
+            if (num <= n)
+                count++;
+            else
+                break;
+        }
+
+        // Case 2: Numbers of the form p^2 * q^2, p != q
+        int size = primes.size();
+        for (int i = 0; i < size; i++) {
+            long p2 = (long)primes.get(i) * primes.get(i);
+            for (int j = i + 1; j < size; j++) {
+                long q2 = (long)primes.get(j) * primes.get(j);
+                if (p2 * q2 <= n)
+                    count++;
+                else
+                    break;
+            }
+        }
+
+        return count;
+    }
+}
+
+#C++ CODE 
+
+
+class Solution {
+public:
+    // Sieve to generate primes up to sqrt(n)
+    vector<int> generatePrimes(int limit) {
+        vector<bool> isPrime(limit + 1, true);
+        isPrime[0] = isPrime[1] = false;
+
+        for (int i = 2; i * i <= limit; ++i) {
+            if (isPrime[i]) {
+                for (int j = i * i; j <= limit; j += i) {
+                    isPrime[j] = false;
+                }
+            }
+        }
+
+        vector<int> primes;
+        for (int i = 2; i <= limit; ++i) {
+            if (isPrime[i]) {
+                primes.push_back(i);
+            }
+        }
+        return primes;
+    }
+
+    int countNumbers(int n) {
+        int count = 0;
+        int sqrtN = sqrt(n) + 1;
+        vector<int> primes = generatePrimes(sqrtN);
+
+        // Case 1: p^8
+        for (int p : primes) {
+            long long num = 1;
+            for (int i = 0; i < 8; ++i) {
+                num *= p;
+                if (num > n) break;
+            }
+            if (num <= n) count++;
+            else break;
+        }
+
+        // Case 2: p^2 * q^2
+        int sz = primes.size();
+        for (int i = 0; i < sz; ++i) {
+            long long p2 = 1LL * primes[i] * primes[i];
+            for (int j = i + 1; j < sz; ++j) {
+                long long q2 = 1LL * primes[j] * primes[j];
+                if (p2 * q2 <= n) count++;
+                else break;
+            }
+        }
+
+        return count;
+    }
+};
