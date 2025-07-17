@@ -1,0 +1,72 @@
+# JAVA CODE
+
+class Solution {
+    public int maxKPower(int n, int k) {
+        Map<Integer, Integer> primeFactors = getPrimeFactors(k);
+        int minPower = Integer.MAX_VALUE;
+
+        for (Map.Entry<Integer, Integer> entry : primeFactors.entrySet()) {
+            int prime = entry.getKey();
+            int expInK = entry.getValue();
+            int powerInFact = countPowerInFactorial(n, prime);
+            minPower = Math.min(minPower, powerInFact / expInK);
+        }
+
+        return minPower;
+    }
+
+    // Prime factorization of k
+    private Map<Integer, Integer> getPrimeFactors(int k) {
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int i = 2; i * i <= k; i++) {
+            while (k % i == 0) {
+                map.put(i, map.getOrDefault(i, 0) + 1);
+                k /= i;
+            }
+        }
+        if (k > 1) map.put(k, map.getOrDefault(k, 0) + 1);
+        return map;
+    }
+
+    // Count of prime p in n! using Legendre's formula
+    private int countPowerInFactorial(int n, int p) {
+        int count = 0;
+        while (n > 0) {
+            n /= p;
+            count += n;
+        }
+        return count;
+    }
+}
+
+#C++ CODE 
+
+class Solution {
+public:
+    int maxKPower(int n, int k) {
+        // Step 1: Prime factorization of k
+        map<int, int> primeFactors;
+        for (int i = 2; i * i <= k; ++i) {
+            while (k % i == 0) {
+                primeFactors[i]++;
+                k /= i;
+            }
+        }
+        if (k > 1) primeFactors[k]++; // if remaining k is prime
+
+        // Step 2: For each prime factor, apply Legendre's formula
+        int minPower = INT_MAX;
+        for (auto [prime, expInK] : primeFactors) {
+            int count = 0;
+            int p = prime;
+            while (p <= n) {
+                count += n / p;
+                if (p > n / prime) break; // avoid overflow
+                p *= prime;
+            }
+            minPower = min(minPower, count / expInK);
+        }
+
+        return minPower;
+    }
+};
