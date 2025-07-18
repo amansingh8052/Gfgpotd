@@ -1,0 +1,69 @@
+# JAVA CODE
+
+class Solution {
+    long gcd(long a, long b) {
+        if (b == 0) return a;
+        return gcd(b, a % b);
+    }
+
+    long lcm(long a, long b) {
+        return a / gcd(a, b) * b;
+    }
+
+    long lcm(long a, long b, long c) {
+        return lcm(a, lcm(b, c));
+    }
+
+    int lcmTriplets(int n) {
+        long ans = 0;
+        
+        if (n <= 2) return n;
+
+        if (n % 2 != 0) {
+            ans = lcm(n, n - 1, n - 2);
+        } else {
+            // LCM(n, n-1, n-3) or LCM(n-1, n-2, n-3)
+            long a = lcm(n, n - 1, n - 3);
+            long b = lcm(n - 1, n - 2, n - 3);
+            ans = Math.max(a, b);
+        }
+
+        return (int) ans;
+    }
+}
+
+#C++ CODE 
+
+class Solution {
+public:
+    long long gcd(long long a, long long b) {
+        return b == 0 ? a : gcd(b, a % b);
+    }
+
+    long long lcm(long long a, long long b) {
+        return a / gcd(a, b) * b;
+    }
+
+    long long lcm(long long a, long long b, long long c) {
+        return lcm(a, lcm(b, c));
+    }
+
+    int lcmTriplets(int n) {
+        if (n <= 2) return n;
+
+        long long res = 0;
+
+        if (n % 2 != 0) {
+            // If n is odd, take n, n-1, n-2
+            res = lcm(n, n - 1, n - 2);
+        } else {
+            // If n is even, try two options:
+            // (n, n-1, n-3) and (n-1, n-2, n-3)
+            long long a = lcm(n, n - 1, n - 3);
+            long long b = lcm(n - 1, n - 2, n - 3);
+            res = max(a, b);
+        }
+
+        return (int)res;
+    }
+};
