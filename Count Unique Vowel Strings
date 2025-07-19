@@ -1,0 +1,87 @@
+# JAVA CODE 
+
+
+class Solution {
+    public int vowelCount(String s) {
+        Map<Character, List<Integer>> vowelMap = new HashMap<>();
+        Set<Character> vowels = new HashSet<>(Arrays.asList('a', 'e', 'i', 'o', 'u'));
+
+        // Collect positions of each vowel
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (vowels.contains(c)) {
+                vowelMap.computeIfAbsent(c, k -> new ArrayList<>()).add(i);
+            }
+        }
+
+        // If no vowels or only one, return number of positions
+        if (vowelMap.size() == 0) return 0;
+
+        // Generate list of counts
+        List<Integer> choices = new ArrayList<>();
+        for (char v : vowelMap.keySet()) {
+            choices.add(vowelMap.get(v).size());
+        }
+
+        // Calculate total combinations (product of choices)
+        long combinations = 1;
+        for (int count : choices) {
+            combinations *= count;
+        }
+
+        // Permutations of distinct vowels
+        int n = choices.size();
+        long permutations = factorial(n);
+
+        return (int)(combinations * permutations);
+    }
+
+    private long factorial(int n) {
+        long fact = 1;
+        for (int i = 2; i <= n; i++) {
+            fact *= i;
+        }
+        return fact;
+    }
+}
+
+#C++ CODE 
+
+
+class Solution {
+public:
+    int vowelCount(string& s) {
+        unordered_map<char, int> freq;
+        unordered_set<char> vowels = {'a', 'e', 'i', 'o', 'u'};
+        
+        // Count frequency of each vowel in the string
+        for (char c : s) {
+            if (vowels.count(c)) {
+                freq[c]++;
+            }
+        }
+
+        if (freq.empty()) return 0;
+
+        // Calculate total combinations by selecting one occurrence for each vowel
+        long long combinations = 1;
+        for (auto& [vowel, count] : freq) {
+            combinations *= count;
+        }
+
+        // Calculate permutations of selected vowels
+        int n = freq.size(); // number of distinct vowels
+        long long permutations = factorial(n);
+
+        return combinations * permutations;
+    }
+
+private:
+    long long factorial(int n) {
+        long long res = 1;
+        for (int i = 2; i <= n; ++i) {
+            res *= i;
+        }
+        return res;
+    }
+};
