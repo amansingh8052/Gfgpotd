@@ -1,0 +1,49 @@
+# JAVA CODE 
+
+class Solution {
+    public int cntSubarrays(int[] arr, int k) {
+        // code here
+        int cnt = 0;
+        int currSum = 0;
+        Map<Integer, Integer> mpp = new HashMap<>();
+        for(int num : arr){
+            currSum += num;
+            if(currSum == k){
+                cnt++;
+            }
+            int comp = currSum - k;
+            if(mpp.containsKey(comp)){
+                cnt += mpp.get(comp);
+            }
+            mpp.put(currSum, mpp.getOrDefault(currSum,0)+1);
+        }
+        return cnt;
+    }
+}
+
+#C++ CODE 
+
+class Solution {
+  public:
+    int cntSubarrays(vector<int> &arr, int k) {
+        int cnt = 0;
+        int currSum = 0;
+        unordered_map<int, int> mpp;
+
+        for (int num : arr) {
+            currSum += num;
+
+            if (currSum == k)
+                cnt++;
+
+            int comp = currSum - k;
+            if (mpp.find(comp) != mpp.end()) {
+                cnt += mpp[comp];
+            }
+
+            mpp[currSum]++;
+        }
+
+        return cnt;
+    }
+};
