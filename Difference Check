@@ -1,0 +1,73 @@
+# JAVA CODE 
+
+
+class Solution {
+    public int minDifference(String[] arr) {
+        int n = arr.length;
+        int[] times = new int[n];
+
+        // Convert all time strings to seconds
+        for (int i = 0; i < n; i++) {
+            times[i] = timeToSeconds(arr[i]);
+        }
+
+        // Sort the array of seconds
+        Arrays.sort(times);
+
+        int minDiff = Integer.MAX_VALUE;
+
+        // Compare adjacent times
+        for (int i = 1; i < n; i++) {
+            minDiff = Math.min(minDiff, times[i] - times[i - 1]);
+        }
+
+        // Compare first and last for wrap-around case
+        int wrapAroundDiff = 86400 - times[n - 1] + times[0];
+        minDiff = Math.min(minDiff, wrapAroundDiff);
+
+        return minDiff;
+    }
+
+    private int timeToSeconds(String time) {
+        String[] parts = time.split(":");
+        int h = Integer.parseInt(parts[0]);
+        int m = Integer.parseInt(parts[1]);
+        int s = Integer.parseInt(parts[2]);
+        return h * 3600 + m * 60 + s;
+    }
+}
+
+
+#C++ CODE 
+
+class Solution {
+  public:
+    int minDifference(vector<string> &arr) {
+        vector<int> seconds;
+
+        // Convert time strings to seconds
+        for (const string &time : arr) {
+            int h = stoi(time.substr(0, 2));
+            int m = stoi(time.substr(3, 2));
+            int s = stoi(time.substr(6, 2));
+            seconds.push_back(h * 3600 + m * 60 + s);
+        }
+
+        // Sort the seconds
+        sort(seconds.begin(), seconds.end());
+
+        int minDiff = INT_MAX;
+        int n = seconds.size();
+
+        // Compare consecutive times
+        for (int i = 1; i < n; ++i) {
+            minDiff = min(minDiff, seconds[i] - seconds[i - 1]);
+        }
+
+        // Handle wrap-around difference between last and first
+        int wrapAround = 86400 - seconds[n - 1] + seconds[0]; // 86400 = 24*3600
+        minDiff = min(minDiff, wrapAround);
+
+        return minDiff;
+    }
+};
