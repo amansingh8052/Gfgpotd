@@ -1,0 +1,43 @@
+# JAVA CODE 
+
+class Solution {
+    int getLongestPrefix(String s) {
+        int n = s.length();
+        for (int l = n - 1; l >= 1; l--) {
+            boolean valid = true;
+            for (int i = l; i < n; i++) {
+                if (s.charAt(i) != s.charAt(i % l)) {
+                    valid = false;
+                    break;
+                }
+            }
+            if (valid) {
+                return l;
+            }
+        }
+        return -1;
+    }
+}
+
+#C++ CODE 
+
+
+class Solution {
+public:
+    int getLongestPrefix(string &s) {
+        int n = s.size();
+        for (int l = n - 1; l >= 1; --l) {
+            bool valid = true;
+            for (int i = l; i < n; ++i) {
+                if (s[i] != s[i % l]) {
+                    valid = false;
+                    break;
+                }
+            }
+            if (valid) {
+                return l;
+            }
+        }
+        return -1;
+    }
+};
