@@ -1,0 +1,156 @@
+# JAVA CODE 
+
+import java.util.*;
+
+class Solution {
+    public int maxSum(String s) {
+        int n = s.length();
+        if (n < 2) return 0;
+
+        // 1) odd-pal radii with Manacher
+        int[] d1 = manacherOdd(s);
+
+        // 2) best palindrome length that ends at each index
+        int[] bestEnd = bestPalEnd(s, d1);
+
+        // leftMax[i] = best palindrome length ending at or before i
+        int[] leftMax = new int[n];
+        for (int i = 0; i < n; ++i) {
+            leftMax[i] = bestEnd[i];
+            if (i > 0) leftMax[i] = Math.max(leftMax[i], leftMax[i - 1]);
+        }
+
+        // 3) compute best palindrome lengths starting at each index by using reversed string
+        String rs = new StringBuilder(s).reverse().toString();
+        int[] d1r = manacherOdd(rs);
+        int[] bestEndR = bestPalEnd(rs, d1r);
+
+        // bestStart[i] for original = bestEndR[n-1 - i] from reversed
+        int[] bestStart = new int[n];
+        for (int i = 0; i < n; ++i) bestStart[i] = bestEndR[n - 1 - i];
+
+        // rightMax[i] = best palindrome length starting at or after i
+        int[] rightMax = new int[n];
+        for (int i = n - 1; i >= 0; --i) {
+            rightMax[i] = bestStart[i];
+            if (i < n - 1) rightMax[i] = Math.max(rightMax[i], rightMax[i + 1]);
+        }
+
+        // 4) try all splits
+        int ans = 0;
+        for (int i = 0; i < n - 1; ++i) {
+            ans = Math.max(ans, leftMax[i] + rightMax[i + 1]);
+        }
+        return ans;
+    }
+
+    // Manacher for odd-length palindromes: d1[i] = radius (k) so length = 2*k - 1
+    private int[] manacherOdd(String s) {
+        int n = s.length();
+        int[] d = new int[n];
+        int l = 0, r = -1;
+        for (int i = 0; i < n; ++i) {
+            int k = 1;
+            if (i <= r) k = Math.min(d[l + r - i], r - i + 1);
+            while (i - k >= 0 && i + k < n && s.charAt(i - k) == s.charAt(i + k)) k++;
+            d[i] = k;
+            if (i + k - 1 > r) {
+                l = i - k + 1;
+                r = i + k - 1;
+            }
+        }
+        return d;
+    }
+
+    // For each end position e, compute the longest odd palindrome length that ends at e.
+    // Sweep left->right maintaining a min-heap of centers (j) that are still active (their right boundary >= e).
+    private int[] bestPalEnd(String s, int[] d1) {
+        int n = s.length();
+        int[] bestEnd = new int[n];
+        // heap ordered by center index j (min j on top)
+        PriorityQueue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(a -> a[0]));
+
+        for (int e = 0; e < n; ++e) {
+            int j = e;
+            int re = j + d1[j] - 1;          // right boundary of maximal palindrome centered at j
+            pq.offer(new int[]{j, re});      // add this center now (all centers <= e have already been added)
+            // remove centers that no longer cover current end e
+            while (!pq.isEmpty() && pq.peek()[1] < e) pq.poll();
+            if (!pq.isEmpty()) {
+                int minJ = pq.peek()[0];    // leftmost center covering e
+                int len = 2 * (e - minJ) + 1;
+                if (len > bestEnd[e]) bestEnd[e] = len;
+            }
+        }
+        return bestEnd;
+    }
+}
+
+#C++ CODE 
+
+#include <bits/stdc++.h>
+using namespace std;
+
+class Solution {
+public:
+    int maxSum(string &s) {
+        int n = s.size();
+        if (n < 2) return 0;
+
+        // Step 1: Manacher for odd palindromes
+        vector<int> d1 = manacherOdd(s);
+
+        // Step 2: Compute leftMax
+        vector<int> leftMax(n, 0);
+        for (int i = 0; i < n; i++) {
+            int len = 2 * d1[i] - 1;
+            int endPos = i + d1[i] - 1;
+            if (endPos < n) leftMax[endPos] = max(leftMax[endPos], len);
+        }
+        for (int i = 1; i < n; i++)
+            leftMax[i] = max(leftMax[i], leftMax[i - 1]);
+
+        // Step 3: Compute rightMax using reversed string
+        string rs = s;
+        reverse(rs.begin(), rs.end());
+        vector<int> d1r = manacherOdd(rs);
+
+        vector<int> rightMax(n, 0);
+        for (int i = 0; i < n; i++) {
+            int len = 2 * d1r[i] - 1;
+            int endPos = i + d1r[i] - 1;
+            if (endPos < n) {
+                int startPos = n - 1 - endPos;
+                rightMax[startPos] = max(rightMax[startPos], len);
+            }
+        }
+        for (int i = n - 2; i >= 0; i--)
+            rightMax[i] = max(rightMax[i], rightMax[i + 1]);
+
+        // Step 4: Find best split
+        int ans = 0;
+        for (int i = 0; i < n - 1; i++) {
+            ans = max(ans, leftMax[i] + rightMax[i + 1]);
+        }
+        return ans;
+    }
+
+private:
+    // Manacher's algorithm for odd-length palindromes
+    vector<int> manacherOdd(const string &s) {
+        int n = s.size();
+        vector<int> d(n, 0);
+        int l = 0, r = -1;
+        for (int i = 0; i < n; i++) {
+            int k = 1;
+            if (i <= r) k = min(d[l + r - i], r - i + 1);
+            while (i - k >= 0 && i + k < n && s[i - k] == s[i + k]) k++;
+            d[i] = k;
+            if (i + k - 1 > r) {
+                l = i - k + 1;
+                r = i + k - 1;
+            }
+        }
+        return d;
+    }
+};
