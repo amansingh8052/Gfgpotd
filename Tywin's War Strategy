@@ -1,0 +1,69 @@
+# JAVA CODE 
+
+
+class Solution {
+    public int minSoldiers(int[] arr, int k) {
+        int n = arr.length;
+        int target = (n + 1) / 2;
+        
+        int luckyCount = 0;
+        List<Integer> costs = new ArrayList<>();
+        
+        for (int soldiers : arr) {
+            if (soldiers % k == 0) {
+                luckyCount++;
+            } else {
+                int add = (k - soldiers % k) % k;
+                costs.add(add);
+            }
+        }
+        
+        if (luckyCount >= target) return 0;
+        
+        Collections.sort(costs);
+        int needed = target - luckyCount;
+        
+        int totalCost = 0;
+        for (int i = 0; i < needed; i++) {
+            totalCost += costs.get(i);
+        }
+        
+        return totalCost;
+    }
+}
+
+
+# C++ CODE 
+
+
+class Solution {
+  public:
+    int minSoldiers(vector<int>& arr, int k) {
+        int n = arr.size();
+        int target = (n + 1) / 2;
+        
+        int luckyCount = 0;
+        vector<int> costs;
+        
+        for (int soldiers : arr) {
+            if (soldiers % k == 0) {
+                luckyCount++;
+            } else {
+                int add = (k - soldiers % k) % k;
+                costs.push_back(add);
+            }
+        }
+        
+        if (luckyCount >= target) return 0;
+        
+        sort(costs.begin(), costs.end());
+        int needed = target - luckyCount;
+        
+        int totalCost = 0;
+        for (int i = 0; i < needed; i++) {
+            totalCost += costs[i];
+        }
+        
+        return totalCost;
+    }
+};
