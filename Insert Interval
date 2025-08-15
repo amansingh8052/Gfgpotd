@@ -1,0 +1,53 @@
+# JAVA CODE
+
+class Solution {
+    public ArrayList<int[]> insertInterval(int[][] intervals, int[] newInterval) {
+        // code here
+        ArrayList<int[]> ans = new ArrayList<>();
+        int i = 0, len = intervals.length;
+        while(i < len && intervals[i][1] < newInterval[0]) {
+            ans.add(intervals[i]);
+            i++;
+        }
+        while(i < len && intervals[i][0] <= newInterval[1]) {
+            newInterval[0] = Math.min(newInterval[0], intervals[i][0]);
+            newInterval[1] = Math.max(newInterval[1], intervals[i][1]);
+            i++;
+        }
+        ans.add(newInterval);
+        while(i < len) {
+            ans.add(intervals[i]);
+            i++;
+        }
+        return ans;
+    }
+}
+
+
+# C++ CODE 
+
+class Solution {
+public:
+    vector<vector<int>> insertInterval(vector<vector<int>> &intervals, vector<int> &newInterval) {
+        vector<vector<int>> ans;
+        int i = 0, len = intervals.size();
+
+        while (i < len && intervals[i][1] < newInterval[0]) {
+            ans.push_back(intervals[i]);
+            i++;
+        }
+        while (i < len && intervals[i][0] <= newInterval[1]) {
+            newInterval[0] = min(newInterval[0], intervals[i][0]);
+            newInterval[1] = max(newInterval[1], intervals[i][1]);
+            i++;
+        }
+        ans.push_back(newInterval);
+
+        while (i < len) {
+            ans.push_back(intervals[i]);
+            i++;
+        }
+
+        return ans;
+    }
+};
