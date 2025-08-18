@@ -1,0 +1,46 @@
+# JAVA CODE 
+
+class Solution {
+    public int hIndex(int[] citations) {
+        // code here
+        int len = citations.length;
+        int[] bucket = new int[len+1];
+        for(int num : citations) {
+            bucket[Math.min(num,len)]++;
+        }
+        int count = 0;
+        for(int i = len; i >= 0; i--){
+            count += bucket[i];
+            if(count >= i) {
+                return i;
+            }
+        }
+        return 0;
+    }
+}
+
+# C++ CODE 
+
+class Solution {
+public:
+    int hIndex(vector<int>& citations) {
+        int len = citations.size();
+        vector<int> bucket(len + 1, 0);
+
+        // Count citations into buckets
+        for (int num : citations) {
+            bucket[min(num, len)]++;
+        }
+
+        int count = 0;
+        // Traverse from high to low
+        for (int i = len; i >= 0; i--) {
+            count += bucket[i];
+            if (count >= i) {
+                return i;
+            }
+        }
+        return 0;
+    }
+};
+
