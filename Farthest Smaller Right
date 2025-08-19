@@ -1,0 +1,74 @@
+# JAVA CODE 
+
+
+class Solution {
+    public ArrayList<Integer> farMin(int[] arr) {
+        int n = arr.length;
+        ArrayList<Integer> ans = new ArrayList<>(Collections.nCopies(n, -1));
+
+        int[] suffMin = new int[n];
+        suffMin[n-1] = arr[n-1];
+        for(int i = n-2; i >= 0; i--){
+            suffMin[i] = Math.min(arr[i], suffMin[i+1]);
+        }
+
+        for(int i = 0; i < n-1; i++){
+            if(suffMin[i+1] >= arr[i]) {
+                ans.set(i, -1);
+                continue;
+            }
+            int low = i+1, high = n-1, best = -1;
+            while(low <= high){
+                int mid = (low + high) / 2;
+                if(suffMin[mid] < arr[i]){
+                    best = mid;  
+                    low = mid + 1;
+                } else {
+                    high = mid - 1;
+                }
+            }
+            ans.set(i, best);
+        }
+        ans.set(n-1, -1); 
+        return ans;
+    }
+}
+
+
+# C++ CODE 
+
+
+class Solution {
+public:
+    vector<int> farMin(vector<int>& arr) {
+        int n = arr.size();
+        vector<int> ans(n, -1);
+        vector<int> suffMin(n);
+
+        suffMin[n-1] = arr[n-1];
+        for(int i = n-2; i >= 0; i--) {
+            suffMin[i] = min(arr[i], suffMin[i+1]);
+        }
+
+        for(int i = 0; i < n-1; i++) {
+            if(suffMin[i+1] >= arr[i]) {
+                ans[i] = -1;
+                continue;
+            }
+
+            int low = i+1, high = n-1, best = -1;
+            while(low <= high) {
+                int mid = (low + high) / 2;
+                if(suffMin[mid] < arr[i]) {
+                    best = mid;   
+                    low = mid + 1; 
+                } else {
+                    high = mid - 1;
+                }
+            }
+            ans[i] = best;
+        }
+        ans[n-1] = -1;
+        return ans;
+    }
+};
