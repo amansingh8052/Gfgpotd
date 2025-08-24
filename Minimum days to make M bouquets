@@ -1,0 +1,96 @@
+# JAVA CODE 
+
+class Solution {
+    public int minDaysBloom(int[] arr, int k, int m) {
+        int n = arr.length;
+        
+        if (n < m * k) return -1;
+        
+        int low = Integer.MAX_VALUE, high = Integer.MIN_VALUE;
+        for (int day : arr) {
+            low = Math.min(low, day);
+            high = Math.max(high, day);
+        }
+        
+        int ans = -1;
+        while (low <= high) {
+            int mid = low + (high - low) / 2;
+            
+            if (canMake(arr, k, m, mid)) {
+                ans = mid;
+                high = mid - 1;
+            } else {
+                low = mid + 1; 
+            }
+        }
+        
+        return ans;
+    }
+    
+    private boolean canMake(int[] arr, int k, int m, int days) {
+        int bouquets = 0, count = 0;
+        
+        for (int bloom : arr) {
+            if (bloom <= days) {
+                count++;
+                if (count == k) {
+                    bouquets++;
+                    count = 0;
+                }
+            } else {
+                count = 0;
+            }
+            if (bouquets >= m) return true;
+        }
+        
+        return false;
+    }
+}
+
+# C++ CODE 
+
+class Solution {
+public:
+    int minDaysBloom(vector<int>& arr, int k, int m) {
+        int n = arr.size();
+    
+        if (n < (long long)m * k) return -1;
+        
+        int low = *min_element(arr.begin(), arr.end());
+        int high = *max_element(arr.begin(), arr.end());
+        int ans = -1;
+        
+        while (low <= high) {
+            int mid = low + (high - low) / 2;
+            
+            if (canMake(arr, k, m, mid)) {
+                ans = mid;
+                high = mid - 1;
+            } else {
+                low = mid + 1;
+            }
+        }
+        
+        return ans;
+    }
+    
+private:
+    bool canMake(vector<int>& arr, int k, int m, int days) {
+        int bouquets = 0, count = 0;
+        
+        for (int bloom : arr) {
+            if (bloom <= days) {
+                count++;
+                if (count == k) {
+                    bouquets++;
+                    count = 0;
+                }
+            } else {
+                count = 0;
+            }
+            if (bouquets >= m) return true;
+        }
+        
+        return false;
+    }
+};
