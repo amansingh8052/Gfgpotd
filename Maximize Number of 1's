@@ -1,0 +1,44 @@
+# JAVA CODE 
+
+class Solution {
+    public int maxOnes(int arr[], int k) {
+        // code here
+        int max = -1, maxZero = 0, l = 0, r = 0;
+        while(r < arr.length) {
+            if(arr[r] == 0) maxZero++;
+            while(maxZero > k) {
+                if(arr[l] == 0) maxZero--;
+                l++;
+            }
+            max = Math.max(max, r-l+1);
+            r++;
+        }
+        return max;
+    }
+}
+
+# C++ CODE 
+
+class Solution {
+  public:
+    int maxOnes(vector<int>& arr, int k) {
+        int maxLen = -1;
+        int maxZero = 0;
+        int l = 0, r = 0;
+        int n = arr.size();
+        
+        while (r < n) {
+            if (arr[r] == 0) maxZero++;
+            
+            while (maxZero > k) {
+                if (arr[l] == 0) maxZero--;
+                l++;
+            }
+            
+            maxLen = max(maxLen, r - l + 1);
+            r++;
+        }
+        
+        return maxLen;
+    }
+};
