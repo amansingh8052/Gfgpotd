@@ -1,0 +1,113 @@
+# JAVA CODE 
+
+/*
+class Node {
+    int data;
+    Node next;
+
+    Node(int x) {
+        data = x;
+        next = null;
+    }
+}
+*/
+class Solution {
+    public Node swapKth(Node head, int k) {
+        if (head == null) return null;
+
+        int n = 0;
+        Node temp = head;
+        while (temp != null) {
+            n++;
+            temp = temp.next;
+        }
+
+        if (k > n) return head;
+
+        if (2 * k - 1 == n) return head;
+
+        Node firstPrev = null, first = head;
+        for (int i = 1; i < k; i++) {
+            firstPrev = first;
+            first = first.next;
+        }
+
+        Node secondPrev = null, second = head;
+        for (int i = 1; i < n - k + 1; i++) {
+            secondPrev = second;
+            second = second.next;
+        }
+
+        if (firstPrev != null) firstPrev.next = second;
+        if (secondPrev != null) secondPrev.next = first;
+
+        Node tempNext = first.next;
+        first.next = second.next;
+        second.next = tempNext;
+
+        if (k == 1) head = second;
+        if (k == n) head = first;
+
+        return head;
+    }
+}
+
+
+# C++ CODE 
+
+/*
+class Node {
+  public:
+    int data;
+    Node *next;
+
+    Node(int x) {
+        data = x;
+        next = NULL;
+    }
+};
+*/
+
+class Solution {
+  public:
+    Node* swapKth(Node* head, int k) {
+        if (!head) return head;
+
+        int n = 0;
+        Node* temp = head;
+        while (temp) {
+            n++;
+            temp = temp->next;
+        }
+
+        if (k > n) return head;
+
+        if (2 * k - 1 == n) return head;
+
+        Node* firstPrev = nullptr;
+        Node* first = head;
+        for (int i = 1; i < k; i++) {
+            firstPrev = first;
+            first = first->next;
+        }
+
+        Node* secondPrev = nullptr;
+        Node* second = head;
+        for (int i = 1; i < n - k + 1; i++) {
+            secondPrev = second;
+            second = second->next;
+        }
+
+        if (firstPrev) firstPrev->next = second;
+        if (secondPrev) secondPrev->next = first;
+
+        Node* tempNext = first->next;
+        first->next = second->next;
+        second->next = tempNext;
+
+        if (k == 1) head = second;
+        if (k == n) head = first;
+
+        return head;
+    }
+};
