@@ -1,0 +1,105 @@
+# JAVA CODE 
+
+/*
+class Node {
+    int data;
+    Node next;
+
+    Node(int x) {
+        data = x;
+        next = null;
+    }
+}
+*/
+
+class Solution {
+    public int lengthOfLoop(Node head) {
+        // code here
+        int ans = 0;
+        if(detectLoop(head)){
+            Node fast = head;
+            Node slow = head;
+            while(fast != null && fast.next != null) {
+                slow = slow.next;
+                fast = fast.next.next;
+                if(fast == slow) {
+                    ans = findLen(fast, slow);
+                    break;
+                }
+            }
+        }
+        return ans;
+    }
+    
+    public int findLen(Node fast, Node slow) {
+        fast = fast.next;
+        int count = 1;
+        while(fast != slow) {
+            count++;
+            fast = fast.next;
+        }
+        return count;
+    }
+    public boolean detectLoop(Node head) {
+        Node fast = head;
+        Node slow = head;
+        while(fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+            if(fast == slow) {
+                return true;
+            }
+        }
+        return false;
+    }
+}
+
+
+# C++ CODE 
+
+/*
+class Node {
+ public:
+    int data;
+    Node *next;
+
+    Node(int x) {
+        data = x;
+        next = NULL;
+    }
+};
+*/
+
+class Solution {
+  public:
+    int lengthOfLoop(Node *head) {
+        if (head == NULL) return 0;
+
+        Node* slow = head;
+        Node* fast = head;
+
+        while (fast != NULL && fast->next != NULL) {
+            slow = slow->next;
+            fast = fast->next->next;
+
+            if (slow == fast) {
+                return findLen(slow);
+            }
+        }
+
+        return 0; // no loop
+    }
+
+  private:
+    int findLen(Node* node) {
+        Node* temp = node->next;
+        int count = 1;
+
+        while (temp != node) {
+            count++;
+            temp = temp->next;
+        }
+
+        return count;
+    }
+};
