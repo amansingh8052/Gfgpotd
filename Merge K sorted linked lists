@@ -1,0 +1,105 @@
+# JAVA CODE 
+
+/*
+class Node {
+    int data;
+    Node next;
+
+    Node(int x) {
+        data = x;
+        next = null;
+    }
+}
+*/
+
+class Solution {
+    Node mergeKLists(Node[] arr) {
+        if (arr == null || arr.length == 0) return null;
+
+        PriorityQueue<Node> pq = new PriorityQueue<>((a, b) -> a.data - b.data);
+
+        for (Node n : arr) {
+            if (n != null) pq.add(n);
+        }
+
+        Node newHead = null, tail = null;
+
+        while (!pq.isEmpty()) {
+            Node tmp = pq.poll();
+
+            if (newHead == null) {
+                newHead = tmp;
+                tail = tmp;
+            } else {
+                tail.next = tmp;
+                tail = tmp;
+            }
+
+            if (tmp.next != null) {
+                pq.add(tmp.next);
+            }
+        }
+        return newHead;
+    }
+}
+
+
+# C++ CODE 
+
+/*
+class Node {
+  public:
+    int data;
+    Node* next;
+
+    Node(int x){
+        data = x;
+        next = NULL;
+    }
+};
+*/
+
+#include <vector>
+#include <queue>
+using namespace std;
+
+class Solution {
+  public:
+    struct compare {
+        bool operator()(Node* a, Node* b) {
+            return a->data > b->data;
+        }
+    };
+
+    Node* mergeKLists(vector<Node*>& arr) {
+        priority_queue<Node*, vector<Node*>, compare> pq;
+
+        for (Node* n : arr) {
+            if (n != nullptr) {
+                pq.push(n);
+            }
+        }
+
+        Node* newHead = nullptr;
+        Node* tail = nullptr;
+
+        while (!pq.empty()) {
+            Node* tmp = pq.top();
+            pq.pop();
+
+            if (newHead == nullptr) {
+                newHead = tmp;
+                tail = tmp;
+            } else {
+                tail->next = tmp;
+                tail = tmp;
+            }
+
+            if (tmp->next != nullptr) {
+                pq.push(tmp->next);
+            }
+        }
+
+        return newHead;
+    }
+};
