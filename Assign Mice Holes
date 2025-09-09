@@ -1,0 +1,37 @@
+# JAVA CODE
+
+class Solution {
+    public int assignHole(int[] mices, int[] holes) {
+        Arrays.sort(mices);
+        Arrays.sort(holes);
+
+        int n = mices.length;
+        int maxTime = 0;
+
+        for (int i = 0; i < n; i++) {
+            maxTime = Math.max(maxTime, Math.abs(mices[i] - holes[i]));
+        }
+
+        return maxTime;
+    }
+}
+
+
+# C++ CODE 
+
+class Solution {
+  public:
+    int assignHole(vector<int>& mices, vector<int>& holes) {
+        sort(mices.begin(), mices.end());
+        sort(holes.begin(), holes.end());
+        
+        int n = mices.size();
+        int maxTime = 0;
+        
+        for (int i = 0; i < n; i++) {
+            maxTime = max(maxTime, abs(mices[i] - holes[i]));
+        }
+        
+        return maxTime;
+    }
+};
