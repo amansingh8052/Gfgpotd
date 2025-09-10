@@ -1,0 +1,53 @@
+# JAVA CODE 
+
+
+class Solution {
+    public String largestSwap(String s) {
+        char[] arr = s.toCharArray();
+        int n = arr.length;
+
+        Map<Character, Integer> lastIndex = new HashMap<>();
+        for (int i = 0; i < n; i++) {
+            lastIndex.put(arr[i], i);
+        }
+
+        for (int i = 0; i < n; i++) {
+            for (char ch = 'z'; ch > arr[i]; ch--) {
+                if (lastIndex.containsKey(ch) && lastIndex.get(ch) > i) {
+                    char temp = arr[i];
+                    arr[i] = arr[lastIndex.get(ch)];
+                    arr[lastIndex.get(ch)] = temp;
+                    return new String(arr);
+                }
+            }
+        }
+
+        return s;
+    }
+}
+
+
+# C++ CODE 
+
+class Solution {
+public:
+    string largestSwap(string &s) {
+        int n = s.size();
+        vector<int> lastIndex(256, -1);
+
+        for (int i = 0; i < n; i++) {
+            lastIndex[(unsigned char)s[i]] = i;
+        }
+
+        for (int i = 0; i < n; i++) {
+            for (int ch = 255; ch > (unsigned char)s[i]; ch--) {
+                if (lastIndex[ch] > i) {
+                    swap(s[i], s[lastIndex[ch]]);
+                    return s;
+                }
+            }
+        }
+
+        return s;
+    }
+};
