@@ -1,0 +1,44 @@
+# JAVA CODE 
+
+
+class Solution {
+    public boolean stringStack(String pat, String tar) {
+        int i = pat.length() - 1, j = tar.length() - 1;
+        if(j > i) return false;
+        
+        while (i >= 0 && j >= 0) {
+            
+            if (pat.charAt(i) != tar.charAt(j)) i -= 2;
+            else {
+                i--;
+                j--;
+            }
+        }
+        
+        return j < 0;
+    }
+}
+
+
+# C++ CODE 
+
+
+class Solution {
+  public:
+    bool stringStack(string &pat, string &tar) {
+        
+        int i = pat.size() - 1, j = tar.size() - 1;
+        if(j > i) return false;
+    
+        while (i >= 0 and j >= 0) {
+            
+            if (pat[i] != tar[j]) i -= 2;
+            else {
+                i--;
+                j--;
+            }
+        }
+        
+        return j < 0;
+    }
+};
