@@ -1,0 +1,58 @@
+# JAVA CODE 
+
+class Solution {
+    public ArrayList<Integer> nextGreater(int[] arr) {
+        // code here
+        int n = arr.length;
+        ArrayList<Integer> result = new ArrayList<>(Collections.nCopies(n, -1));
+        Stack<Integer> stack = new Stack<>();
+        
+        for (int i = 2 * n - 1; i >= 0; i--) {
+            int idx = i % n;
+            while (!stack.isEmpty() && arr[stack.peek()] <= arr[idx]) {
+                stack.pop();
+            }
+            if (i < n) {
+                if (!stack.isEmpty()) {
+                    result.set(idx, arr[stack.peek()]);
+                } else {
+                    result.set(idx, -1);
+                }
+            }
+            stack.push(idx);
+        }
+        
+        return result;
+    }
+}
+
+# C++ CODE
+
+class Solution {
+  public:
+    vector<int> nextGreater(vector<int> &arr) {
+        int n = arr.size();
+        vector<int> result(n, -1);
+        stack<int> st;
+
+        for (int i = 2 * n - 1; i >= 0; i--) {
+            int idx = i % n;
+
+            while (!st.empty() && arr[st.top()] <= arr[idx]) {
+                st.pop();
+            }
+
+            if (i < n) {
+                if (!st.empty()) {
+                    result[idx] = arr[st.top()];
+                } else {
+                    result[idx] = -1;
+                }
+            }
+
+            st.push(idx);
+        }
+
+        return result;
+    }
+};
