@@ -1,0 +1,36 @@
+# JAVA CODE
+
+class Solution {
+    public void reverseQueue(Queue<Integer> q) {
+        Stack<Integer> st = new Stack<>();
+        
+        while (!q.isEmpty()) {
+            st.push(q.poll());
+        }
+        
+        while (!st.isEmpty()) {
+            q.add(st.pop());
+        }
+    }
+}
+
+
+# C++ CODE 
+
+class Solution {
+  public:
+    void reverseQueue(queue<int> &q) {
+        stack<int> st;
+        
+        while (!q.empty()) {
+            st.push(q.front());
+            q.pop();
+        }
+        
+        while (!st.empty()) {
+            q.push(st.top());
+            st.pop();
+        }
+    }
+};
+
