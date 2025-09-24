@@ -1,0 +1,100 @@
+# JAVA CODE 
+
+class SpecialQueue {
+    private Deque<Integer> q;    
+    private Deque<Integer> minDeque;
+    private Deque<Integer> maxDeque;
+
+    public SpecialQueue() {
+        q = new LinkedList<>();
+        minDeque = new LinkedList<>();
+        maxDeque = new LinkedList<>();
+    }
+
+    public void enqueue(int x) {
+        q.offer(x);
+
+        while (!minDeque.isEmpty() && minDeque.peekLast() > x) {
+            minDeque.pollLast();
+        }
+        minDeque.offer(x);
+
+        while (!maxDeque.isEmpty() && maxDeque.peekLast() < x) {
+            maxDeque.pollLast();
+        }
+        maxDeque.offer(x);
+    }
+
+    public void dequeue() {
+        int removed = q.poll();
+
+        if (removed == minDeque.peek()) {
+            minDeque.poll();
+        }
+        if (removed == maxDeque.peek()) {
+            maxDeque.poll();
+        }
+    }
+
+    public int getFront() {
+        return q.peek();
+    }
+
+    public int getMin() {
+        return minDeque.peek();
+    }
+
+    public int getMax() {
+        return maxDeque.peek();
+    }
+}
+
+
+# C++ CODE
+
+
+class SpecialQueue {
+    queue<int> q;
+    deque<int> minDeque;
+    deque<int> maxDeque;
+
+public:
+    void enqueue(int x) {
+        q.push(x);
+
+        while (!minDeque.empty() && minDeque.back() > x) {
+            minDeque.pop_back();
+        }
+        minDeque.push_back(x);
+
+        while (!maxDeque.empty() && maxDeque.back() < x) {
+            maxDeque.pop_back();
+        }
+        maxDeque.push_back(x);
+    }
+
+    void dequeue() {
+        if (q.empty()) return;
+        int removed = q.front();
+        q.pop();
+
+        if (!minDeque.empty() && removed == minDeque.front()) {
+            minDeque.pop_front();
+        }
+        if (!maxDeque.empty() && removed == maxDeque.front()) {
+            maxDeque.pop_front();
+        }
+    }
+
+    int getFront() {
+        return q.front();
+    }
+
+    int getMin() {
+        return minDeque.front();
+    }
+
+    int getMax() {
+        return maxDeque.front();
+    }
+};
