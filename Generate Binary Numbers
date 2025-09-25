@@ -1,0 +1,45 @@
+# JAVA CODE
+
+class Solution {
+    public ArrayList<String> generateBinary(int n) {
+        ArrayList<String> result = new ArrayList<>();
+        Queue<String> q = new LinkedList<>();
+        
+        q.add("1");
+        
+        for (int i = 1; i <= n; i++) {
+            String curr = q.poll();
+            result.add(curr);
+            
+            q.add(curr + "0");
+            q.add(curr + "1");
+        }
+        
+        return result;
+    }
+}
+
+#C++ CODE
+
+
+class Solution {
+  public:
+    vector<string> generateBinary(int n) {
+        vector<string> result;
+        queue<string> q;
+        
+        q.push("1");
+        
+        for (int i = 1; i <= n; i++) {
+            string curr = q.front();
+            q.pop();
+            
+            result.push_back(curr);
+            
+            q.push(curr + "0");
+            q.push(curr + "1");
+        }
+        
+        return result;
+    }
+};
