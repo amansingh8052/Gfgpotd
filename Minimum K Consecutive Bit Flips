@@ -1,0 +1,50 @@
+# JAVA CODE 
+
+
+class Solution {
+    public int kBitFlips(int[] arr, int k) {
+        int n = arr.length;
+        int res = 0, flipped = 0;
+        int[] isFlipped = new int[n]; 
+
+        for (int i = 0; i < n; i++) {
+            if (i >= k) {
+                flipped ^= isFlipped[i - k];
+            }
+
+            if ((arr[i] ^ flipped) == 0) {
+                if (i + k > n) return -1; 
+                res++;
+                flipped ^= 1;
+                isFlipped[i] = 1;
+            }
+        }
+        return res;
+    }
+}
+
+
+# C++ CODE 
+
+class Solution {
+public:
+    int kBitFlips(vector<int>& arr, int k) {
+        int n = arr.size();
+        int res = 0, flipped = 0;
+        vector<int> isFlipped(n, 0); 
+
+        for (int i = 0; i < n; i++) {
+            if (i >= k) {
+                flipped ^= isFlipped[i - k];
+            }
+
+            if ((arr[i] ^ flipped) == 0) {
+                if (i + k > n) return -1;
+                res++;
+                flipped ^= 1;
+                isFlipped[i] = 1;
+            }
+        }
+        return res;
+    }
+};
