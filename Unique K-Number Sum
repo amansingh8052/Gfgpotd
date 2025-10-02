@@ -1,0 +1,55 @@
+# JAVA CODE 
+
+
+class Solution {
+    public ArrayList<ArrayList<Integer>> combinationSum(int n, int k) {
+        ArrayList<ArrayList<Integer>> result = new ArrayList<>();
+        backtrack(result, new ArrayList<>(), n, k, 1);
+        return result;
+    }
+
+    private void backtrack(ArrayList<ArrayList<Integer>> result, ArrayList<Integer> temp,
+                           int target, int k, int start) {
+        if (target == 0 && temp.size() == k) {
+            result.add(new ArrayList<>(temp));
+            return;
+        }
+        if (target < 0 || temp.size() > k) return;
+
+        for (int i = start; i <= 9; i++) {
+            temp.add(i);
+            backtrack(result, temp, target - i, k, i + 1);
+            temp.remove(temp.size() - 1);
+        }
+    }
+}
+
+
+# C++ CODE 
+
+class Solution {
+  public:
+    vector<vector<int>> combinationSum(int n, int k) {
+        vector<vector<int>> result;
+        vector<int> temp;
+        backtrack(result, temp, n, k, 1);
+        return result;
+    }
+    
+  private:
+    void backtrack(vector<vector<int>>& result, vector<int>& temp,
+                   int target, int k, int start) {
+        if (target == 0 && temp.size() == k) {
+            result.push_back(temp);
+            return;
+        }
+        
+        if (target < 0 || temp.size() > k) return;
+        
+        for (int i = start; i <= 9; i++) {
+            temp.push_back(i);
+            backtrack(result, temp, target - i, k, i + 1);
+            temp.pop_back();
+        }
+    }
+};
