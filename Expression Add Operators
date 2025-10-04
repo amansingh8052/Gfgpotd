@@ -1,0 +1,91 @@
+# JAVA CODE 
+
+
+class Solution {
+    ArrayList<String> res;
+    String s;
+    int target;
+    
+    public ArrayList<String> findExpr(String s, int target) {
+        this.res = new ArrayList<>();
+        this.s = s;
+        this.target = target;
+        
+        backtrack(0, 0, 0, "");
+        Collections.sort(res);
+        return res;
+    }
+    
+    private void backtrack(int idx, long eval, long prev, String path) {
+        if (idx == s.length()) {
+            if (eval == target) {
+                res.add(path);
+            }
+            return;
+        }
+        
+        for (int i = idx; i < s.length(); i++) {
+            if (i != idx && s.charAt(idx) == '0') break;
+            
+            long curNum = Long.parseLong(s.substring(idx, i + 1));
+            
+            if (idx == 0) {
+                backtrack(i + 1, curNum, curNum, path + curNum);
+            } else {
+                backtrack(i + 1, eval + curNum, curNum, path + "+" + curNum);
+                backtrack(i + 1, eval - curNum, -curNum, path + "-" + curNum);
+                backtrack(i + 1, eval - prev + prev * curNum, prev * curNum, path + "*" + curNum);
+            }
+        }
+    }
+}
+
+
+# C++ CODE 
+
+
+class Solution {
+public:
+    vector<string> res;
+    string s;
+    int target;
+
+    vector<string> findExpr(string &s, int target) {
+        this->s = s;
+        this->target = target;
+        res.clear();
+
+        backtrack(0, 0, 0, "");
+        sort(res.begin(), res.end()); // lexicographically smallest order
+        return res;
+    }
+
+private:
+    void backtrack(int idx, long long eval, long long prev, string path) {
+        if (idx == (int)s.size()) {
+            if (eval == target) {
+                res.push_back(path);
+            }
+            return;
+        }
+
+        for (int i = idx; i < (int)s.size(); i++) {
+            // prevent numbers with leading zeros
+            if (i != idx && s[idx] == '0') break;
+
+            long long curNum = stoll(s.substr(idx, i - idx + 1));
+
+            if (idx == 0) {
+                // first number, no operator
+                backtrack(i + 1, curNum, curNum, to_string(curNum));
+            } else {
+                // '+'
+                backtrack(i + 1, eval + curNum, curNum, path + "+" + to_string(curNum));
+                // '-'
+                backtrack(i + 1, eval - curNum, -curNum, path + "-" + to_string(curNum));
+                // '*'
+                backtrack(i + 1, eval - prev + prev * curNum, prev * curNum, path + "*" + to_string(curNum));
+            }
+        }
+    }
+};
