@@ -1,0 +1,67 @@
+# JAVA CODE 
+
+class Solution {
+    ArrayList<Integer> zigZagTraversal(Node root) {
+        ArrayList<Integer> result = new ArrayList<>();
+        if (root == null) return result;
+
+        Queue<Node> queue = new LinkedList<>();
+        queue.add(root);
+        boolean leftToRight = true;
+
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            ArrayList<Integer> level = new ArrayList<>();
+
+            for (int i = 0; i < size; i++) {
+                Node curr = queue.poll();
+                level.add(curr.data);
+
+                if (curr.left != null) queue.add(curr.left);
+                if (curr.right != null) queue.add(curr.right);
+            }
+            if (!leftToRight) Collections.reverse(level);
+
+            result.addAll(level);
+            leftToRight = !leftToRight;
+        }
+
+        return result;
+    }
+}
+
+
+# C++ CODE
+
+class Solution {
+  public:
+    vector<int> zigZagTraversal(Node* root) {
+        vector<int> result;
+        if (!root) return result;
+
+        queue<Node*> q;
+        q.push(root);
+        bool leftToRight = true;
+
+        while (!q.empty()) {
+            int size = q.size();
+            vector<int> level(size);
+
+            for (int i = 0; i < size; i++) {
+                Node* curr = q.front();
+                q.pop();
+                int index = leftToRight ? i : (size - 1 - i);
+                level[index] = curr->data;
+
+                if (curr->left) q.push(curr->left);
+                if (curr->right) q.push(curr->right);
+            }
+            for (int val : level)
+                result.push_back(val);
+
+            leftToRight = !leftToRight;
+        }
+
+        return result;
+    }
+};
