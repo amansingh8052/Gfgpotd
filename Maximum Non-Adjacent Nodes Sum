@@ -1,0 +1,52 @@
+# JAVA CODE
+
+
+
+class Solution {
+    
+    static class Pair {
+        int include;
+        int exclude;
+        Pair(int include, int exclude) {
+            this.include = include;
+            this.exclude = exclude;
+        }
+    }
+
+    public int getMaxSum(Node root) {
+        Pair res = solve(root);
+        return Math.max(res.include, res.exclude);
+    }
+
+    private Pair solve(Node node) {
+        if (node == null) return new Pair(0, 0);
+        Pair left = solve(node.left);
+        Pair right = solve(node.right);
+        int include = node.data + left.exclude + right.exclude;
+        int exclude = Math.max(left.include, left.exclude) + Math.max(right.include, right.exclude);
+
+        return new Pair(include, exclude);
+    }
+}
+
+
+# C++ CODE
+
+class Solution {
+  public:
+    pair<int, int> solve(Node* root) {
+        if (!root) return {0, 0};
+        
+        pair<int, int> left = solve(root->left);
+        pair<int, int> right = solve(root->right);
+        int include = root->data + left.second + right.second;
+        int exclude = max(left.first, left.second) + max(right.first, right.second);
+        
+        return {include, exclude};
+    }
+    
+    int getMaxSum(Node* root) {
+        pair<int, int> res = solve(root);
+        return max(res.first, res.second);
+    }
+};
