@@ -1,0 +1,45 @@
+# JAVA CODE 
+
+class Solution {
+    static int sum = 0;
+    
+    public static void transformTree(Node root) {
+        sum = 0;
+        transform(root);
+    }
+    
+    private static void transform(Node root) {
+        if (root == null) return;
+        transform(root.right);
+        int original = root.data;
+        root.data = sum;
+        sum += original;
+        transform(root.left);
+    }
+}
+
+
+# C++ CODE 
+
+
+
+class Solution {
+  public:
+    int sum = 0;
+
+    void transformTree(Node *root) {
+        sum = 0;
+        transform(root);
+    }
+
+  private:
+    void transform(Node* root) {
+        if (root == nullptr)
+            return;
+        transform(root->right);
+        int originalValue = root->data;
+        root->data = sum;
+        sum += originalValue;
+        transform(root->left);
+    }
+};
