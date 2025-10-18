@@ -1,0 +1,62 @@
+# JAVA CODE 
+
+class Solution {
+    private void inorder(Node root, ArrayList<Integer> list) {
+        if (root == null) return;
+        inorder(root.left, list);
+        list.add(root.data);
+        inorder(root.right, list);
+    }
+    
+    public int findMedian(Node root) {
+        ArrayList<Integer> list = new ArrayList<>();
+        inorder(root, list);
+        
+        int n = list.size();
+        if (n == 0) return 0;
+        if (n % 2 == 1) {
+            return list.get(n / 2);
+        }
+        else {
+            return list.get((n / 2) - 1);
+        }
+    }
+}
+
+
+# C++ CODE 
+
+
+class Solution {
+  public:
+    int countNodes(Node* root) {
+        if (!root) return 0;
+        return 1 + countNodes(root->left) + countNodes(root->right);
+    }
+    void inorder(Node* root, int& count, int target1, int target2, int& val1, int& val2) {
+        if (!root) return;
+
+        inorder(root->left, count, target1, target2, val1, val2);
+        count++;
+
+        if (count == target1) val1 = root->data;
+        if (count == target2) val2 = root->data;
+
+        inorder(root->right, count, target1, target2, val1, val2);
+    }
+
+    int findMedian(Node* root) {
+        if (!root) return 0;
+
+        int n = countNodes(root);
+        int count = 0;
+        int val1 = -1, val2 = -1;
+        if (n % 2 == 1) {
+            inorder(root, count, (n + 1) / 2, (n + 1) / 2, val1, val2);
+            return val1;
+        } else {
+            inorder(root, count, n / 2, (n / 2) + 1, val1, val2);
+            return val1;
+        }
+    }
+};
