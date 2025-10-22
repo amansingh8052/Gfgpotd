@@ -1,0 +1,49 @@
+# JAVA CODE 
+
+
+class Solution {
+    public void nearlySorted(int[] arr, int k) {
+        // code here
+        PriorityQueue<Integer> minHeap = new PriorityQueue<>();
+        int index = 0;
+        for (int i = 0; i <= k && i < arr.length; i++) {
+            minHeap.add(arr[i]);
+        }
+        for (int i = k + 1; i < arr.length; i++) {
+            arr[index++] = minHeap.poll();
+            minHeap.add(arr[i]);
+        }
+        while (!minHeap.isEmpty()) {
+            arr[index++] = minHeap.poll();
+        }
+    }
+}
+
+
+# C++ CODE
+
+
+
+class Solution {
+  public:
+    void nearlySorted(vector<int>& arr, int k) {
+        priority_queue<int, vector<int>, greater<int>> minHeap;
+        
+        int index = 0;
+        
+        for (int i = 0; i <= k && i < arr.size(); i++) {
+            minHeap.push(arr[i]);
+        }
+        
+        for (int i = k + 1; i < arr.size(); i++) {
+            arr[index++] = minHeap.top();
+            minHeap.pop();
+            minHeap.push(arr[i]);
+        }
+        
+        while (!minHeap.empty()) {
+            arr[index++] = minHeap.top();
+            minHeap.pop();
+        }
+    }
+};
