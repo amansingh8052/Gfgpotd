@@ -1,0 +1,60 @@
+# JAVA CODE 
+
+class Solution {
+    public ArrayList<ArrayList<Integer>> kClosest(int[][] points, int k) {
+        PriorityQueue<int[]> maxHeap = new PriorityQueue<>(
+            (a, b) -> Integer.compare(distance(b), distance(a))
+        );
+
+        for (int[] p : points) {
+            maxHeap.add(p);
+            if (maxHeap.size() > k) {
+                maxHeap.poll();
+            }
+        }
+        ArrayList<ArrayList<Integer>> result = new ArrayList<>();
+        while (!maxHeap.isEmpty()) {
+            int[] p = maxHeap.poll();
+            ArrayList<Integer> temp = new ArrayList<>();
+            temp.add(p[0]);
+            temp.add(p[1]);
+            result.add(temp);
+        }
+        return result;
+    }
+    private int distance(int[] p) {
+        return p[0] * p[0] + p[1] * p[1];
+    }
+}
+
+
+# C++ CODE
+
+
+class Solution {
+  public:
+    vector<vector<int>> kClosest(vector<vector<int>>& points, int k) {
+        priority_queue<pair<int, int>> maxHeap;
+
+        for (int i = 0; i < points.size(); i++) {
+            int x = points[i][0];
+            int y = points[i][1];
+            int dist = x * x + y * y;
+
+            maxHeap.push({dist, i});
+
+            if (maxHeap.size() > k) {
+                maxHeap.pop();
+            }
+        }
+
+        vector<vector<int>> result;
+        while (!maxHeap.empty()) {
+            int idx = maxHeap.top().second;
+            maxHeap.pop();
+            result.push_back(points[idx]);
+        }
+
+        return result;
+    }
+};
