@@ -1,0 +1,85 @@
+  # JAVA CODE 
+
+
+class Solution {
+    public boolean isPossible(int[] arr, int k) {
+        Map<Integer, Integer> count = new HashMap<>();
+        Map<Integer, Integer> end = new HashMap<>();
+        
+        for (int num : arr) {
+            count.put(num, count.getOrDefault(num, 0) + 1);
+        }
+        
+        for (int num : arr) {
+            if (count.get(num) == 0) continue;
+            
+            if (end.getOrDefault(num - 1, 0) > 0) {
+                end.put(num - 1, end.get(num - 1) - 1);
+                end.put(num, end.getOrDefault(num, 0) + 1);
+            } 
+            else {
+                boolean canForm = true;
+                for (int i = 0; i < k; i++) {
+                    if (count.getOrDefault(num + i, 0) <= 0) {
+                        canForm = false;
+                        break;
+                    }
+                }
+                if (!canForm) return false;
+                
+                for (int i = 0; i < k; i++) {
+                    count.put(num + i, count.get(num + i) - 1);
+                }
+                end.put(num + k - 1, end.getOrDefault(num + k - 1, 0) + 1);
+                
+                continue;
+            }
+            
+            count.put(num, count.get(num) - 1);
+        }
+        
+        return true;
+    }
+}
+
+
+# C++ CODE
+
+
+class Solution {
+  public:
+    bool isPossible(vector<int>& arr, int k) {
+        unordered_map<int, int> count, end;
+
+        for (int num : arr)
+            count[num]++;
+
+        for (int num : arr) {
+            if (count[num] == 0) continue;
+
+            if (end[num - 1] > 0) {
+                end[num - 1]--;
+                end[num]++;
+                count[num]--;
+            }
+            else {
+                bool canForm = true;
+                for (int i = 0; i < k; i++) {
+                    if (count[num + i] <= 0) {
+                        canForm = false;
+                        break;
+                    }
+                }
+
+                if (!canForm) return false;
+
+                for (int i = 0; i < k; i++) {
+                    count[num + i]--;
+                }
+
+                end[num + k - 1]++;
+            }
+        }
+        return true;
+    }
+};
