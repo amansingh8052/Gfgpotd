@@ -1,0 +1,62 @@
+# JAVA CODE 
+
+
+class Solution {
+    public int minOperations(int[] arr) {
+        double originalSum = 0;
+        PriorityQueue<Double> maxHeap = new PriorityQueue<>(Collections.reverseOrder());
+        
+        for (int num : arr) {
+            originalSum += num;
+            maxHeap.add((double) num);
+        }
+        
+        double target = originalSum / 2.0;
+        double currentSum = originalSum;
+        int operations = 0;
+        
+        while (currentSum > target) {
+            double largest = maxHeap.poll();
+            double half = largest / 2.0;
+            currentSum -= half;
+            maxHeap.add(half);
+            operations++;
+        }
+        
+        return operations;
+    }
+}
+
+
+# C++ CODE
+
+
+class Solution {
+  public:
+    int minOperations(vector<int>& arr) {
+        priority_queue<double> pq;
+        double sum = 0;
+        
+        for (int x : arr) {
+            sum += x;
+            pq.push(x);
+        }
+        
+        double target = sum / 2.0;
+        double curr = sum;
+        int operations = 0;
+        
+        while (curr > target) {
+            double top = pq.top();
+            pq.pop();
+            
+            double half = top / 2.0;
+            curr -= half;
+            pq.push(half);
+            
+            operations++;
+        }
+        
+        return operations;
+    }
+};
