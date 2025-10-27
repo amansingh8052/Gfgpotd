@@ -1,0 +1,68 @@
+# JAVA CODE
+
+
+
+class Solution {
+    public ArrayList<ArrayList<Integer>> kSmallestPair(int[] arr1, int[] arr2, int k) {
+        ArrayList<ArrayList<Integer>> result = new ArrayList<>();
+        if (arr1.length == 0 || arr2.length == 0 || k == 0) return result;
+
+        PriorityQueue<int[]> minHeap = new PriorityQueue<>((a, b) -> a[0] - b[0]);
+
+        for (int i = 0; i < Math.min(arr1.length, k); i++) {
+            minHeap.offer(new int[]{arr1[i] + arr2[0], i, 0});
+        }
+
+        while (k-- > 0 && !minHeap.isEmpty()) {
+            int[] curr = minHeap.poll();
+            int i = curr[1], j = curr[2];
+
+            ArrayList<Integer> pair = new ArrayList<>();
+            pair.add(arr1[i]);
+            pair.add(arr2[j]);
+            result.add(pair);
+
+            if (j + 1 < arr2.length) {
+                minHeap.offer(new int[]{arr1[i] + arr2[j + 1], i, j + 1});
+            }
+        }
+
+        return result;
+    }
+}
+
+
+# C++ CODE
+
+
+
+class Solution {
+  public:
+    vector<vector<int>> kSmallestPair(vector<int> &arr1, vector<int> &arr2, int k) {
+        vector<vector<int>> result;
+        if (arr1.empty() || arr2.empty() || k == 0) return result;
+
+        priority_queue<vector<int>, vector<vector<int>>, greater<vector<int>>> minHeap;
+
+        for (int i = 0; i < min((int)arr1.size(), k); i++) {
+            minHeap.push({arr1[i] + arr2[0], i, 0});
+        }
+
+        while (k-- > 0 && !minHeap.empty()) {
+            auto curr = minHeap.top();
+            minHeap.pop();
+
+            int sum = curr[0];
+            int i = curr[1];
+            int j = curr[2];
+
+            result.push_back({arr1[i], arr2[j]});
+
+            if (j + 1 < arr2.size()) {
+                minHeap.push({arr1[i] + arr2[j + 1], i, j + 1});
+            }
+        }
+
+        return result;
+    }
+};
