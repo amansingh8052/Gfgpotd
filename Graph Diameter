@@ -1,0 +1,139 @@
+# JAVA CODE 
+
+
+class Solution {
+    public int diameter(int V, int[][] edges) {
+        List<List<Integer>> adj = new ArrayList<>();
+        for (int i = 0; i < V; i++) {
+            adj.add(new ArrayList<>());
+        }
+        for (int[] e : edges) {
+            adj.get(e[0]).add(e[1]);
+            adj.get(e[1]).add(e[0]);
+        }
+
+        boolean[] visited = new boolean[V];
+        int diameter = 0;
+
+        for (int i = 0; i < V; i++) {
+            if (!visited[i]) {
+                int farthest = bfsFindFarthest(i, adj, visited);
+
+                diameter = Math.max(diameter, bfsFindDistance(farthest, adj));
+            }
+        }
+
+        return diameter;
+    }
+
+    private int bfsFindFarthest(int src, List<List<Integer>> adj, boolean[] visited) {
+        Queue<Integer> q = new LinkedList<>();
+        q.add(src);
+        visited[src] = true;
+        int farthest = src;
+
+        while (!q.isEmpty()) {
+            int node = q.poll();
+            farthest = node;
+            for (int neigh : adj.get(node)) {
+                if (!visited[neigh]) {
+                    visited[neigh] = true;
+                    q.add(neigh);
+                }
+            }
+        }
+        return farthest;
+    }
+
+    private int bfsFindDistance(int src, List<List<Integer>> adj) {
+        Queue<int[]> q = new LinkedList<>();
+        boolean[] visited = new boolean[adj.size()];
+        q.add(new int[]{src, 0});
+        visited[src] = true;
+        int maxDist = 0;
+
+        while (!q.isEmpty()) {
+            int[] curr = q.poll();
+            int node = curr[0], dist = curr[1];
+            maxDist = Math.max(maxDist, dist);
+
+            for (int neigh : adj.get(node)) {
+                if (!visited[neigh]) {
+                    visited[neigh] = true;
+                    q.add(new int[]{neigh, dist + 1});
+                }
+            }
+        }
+        return maxDist;
+    }
+}
+
+
+# C++ CODE 
+
+
+
+class Solution {
+  public:
+    int diameter(int V, vector<vector<int>>& edges) {
+        vector<vector<int>> adj(V);
+        for (auto &e : edges) {
+            adj[e[0]].push_back(e[1]);
+            adj[e[1]].push_back(e[0]);
+        }
+
+        vector<bool> visited(V, false);
+        int maxDiameter = 0;
+
+        for (int i = 0; i < V; i++) {
+            if (!visited[i]) {
+                int farthestNode = bfsFindFarthest(i, adj, visited);
+                maxDiameter = max(maxDiameter, bfsFindDistance(farthestNode, adj));
+            }
+        }
+
+        return maxDiameter;
+    }
+
+  private:
+    int bfsFindFarthest(int src, vector<vector<int>>& adj, vector<bool>& visited) {
+        queue<int> q;
+        q.push(src);
+        visited[src] = true;
+        int farthest = src;
+
+        while (!q.empty()) {
+            int node = q.front(); q.pop();
+            farthest = node;
+            for (int neigh : adj[node]) {
+                if (!visited[neigh]) {
+                    visited[neigh] = true;
+                    q.push(neigh);
+                }
+            }
+        }
+        return farthest;
+    }
+
+    int bfsFindDistance(int src, vector<vector<int>>& adj) {
+        queue<pair<int, int>> q;
+        vector<bool> visited(adj.size(), false);
+        q.push({src, 0});
+        visited[src] = true;
+
+        int maxDist = 0;
+        while (!q.empty()) {
+            auto [node, dist] = q.front();
+            q.pop();
+            maxDist = max(maxDist, dist);
+
+            for (int neigh : adj[node]) {
+                if (!visited[neigh]) {
+                    visited[neigh] = true;
+                    q.push({neigh, dist + 1});
+                }
+            }
+        }
+        return maxDist;
+    }
+};
