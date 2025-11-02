@@ -1,0 +1,86 @@
+# JAVA CODE 
+
+class Solution {
+    public int maxEdgesToAdd(int V, int[][] edges) {
+        List<List<Integer>> adj = new ArrayList<>();
+        int[] indegree = new int[V];
+        for (int i = 0; i < V; i++) adj.add(new ArrayList<>());
+        for (int[] e : edges) {
+            adj.get(e[0]).add(e[1]);
+            indegree[e[1]]++;
+        }
+
+        Queue<Integer> q = new LinkedList<>();
+        for (int i = 0; i < V; i++) if (indegree[i] == 0) q.add(i);
+
+        List<Integer> topo = new ArrayList<>();
+        while (!q.isEmpty()) {
+            int u = q.poll();
+            topo.add(u);
+            for (int v : adj.get(u)) {
+                indegree[v]--;
+                if (indegree[v] == 0) q.add(v);
+            }
+        }
+
+        boolean[][] hasEdge = new boolean[V][V];
+        for (int[] e : edges) hasEdge[e[0]][e[1]] = true;
+        int count = 0;
+        for (int i = 0; i < V; i++) {
+            for (int j = i + 1; j < V; j++) {
+                int u = topo.get(i);
+                int v = topo.get(j);
+                if (!hasEdge[u][v]) count++;
+            }
+        }
+
+        return count;
+    }
+}
+
+
+# C++ CODE
+
+
+
+class Solution {
+  public:
+    int maxEdgesToAdd(int V, vector<vector<int>>& edges) {
+        vector<vector<int>> adj(V);
+        vector<int> indegree(V, 0);
+        for (auto &e : edges) {
+            adj[e[0]].push_back(e[1]);
+            indegree[e[1]]++;
+        }
+        
+        queue<int> q;
+        for (int i = 0; i < V; i++) 
+            if (indegree[i] == 0) q.push(i);
+        
+        vector<int> topo;
+        while (!q.empty()) {
+            int u = q.front(); q.pop();
+            topo.push_back(u);
+            for (int v : adj[u]) {
+                indegree[v]--;
+                if (indegree[v] == 0) q.push(v);
+            }
+        }
+
+        vector<vector<bool>> hasEdge(V, vector<bool>(V, false));
+        for (auto &e : edges)
+            hasEdge[e[0]][e[1]] = true;
+
+        int count = 0;
+        for (int i = 0; i < V; i++) {
+            for (int j = i + 1; j < V; j++) {
+                int u = topo[i];
+                int v = topo[j];
+                if (!hasEdge[u][v])
+                    count++;
+            }
+        }
+        
+        return count;
+    }
+};
