@@ -1,0 +1,71 @@
+# JAVA CODE 
+
+
+
+class Solution {
+    public ArrayList<Integer> safeNodes(int V, int[][] edges) {
+        ArrayList<ArrayList<Integer>> revGraph = new ArrayList<>();
+        for (int i = 0; i < V; i++) revGraph.add(new ArrayList<>());
+
+        int[] indegree = new int[V];
+        for (int[] edge : edges) {
+            int u = edge[0];
+            int v = edge[1];
+            revGraph.get(v).add(u);
+            indegree[u]++;
+        }
+        Queue<Integer> q = new LinkedList<>();
+        for (int i = 0; i < V; i++) {
+            if (indegree[i] == 0) q.add(i);
+        }
+        ArrayList<Integer> safe = new ArrayList<>();
+        // Kahn's algorithm
+        while (!q.isEmpty()) {
+            int node = q.poll();
+            safe.add(node);
+            for (int neighbor : revGraph.get(node)) {
+                indegree[neighbor]--;
+                if (indegree[neighbor] == 0) q.add(neighbor);
+            }
+        }
+        Collections.sort(safe);
+        return safe;
+    }
+}
+
+
+
+# C++ CODE 
+
+
+
+class Solution {
+  public:
+    vector<int> safeNodes(int V, vector<vector<int>>& edges) {
+        vector<vector<int>> revGraph(V);
+        vector<int> indegree(V, 0);
+        for (auto &e : edges) {
+            int u = e[0], v = e[1];
+            revGraph[v].push_back(u);
+            indegree[u]++;
+        }
+        queue<int> q;
+        for (int i = 0; i < V; i++) {
+            if (indegree[i] == 0) q.push(i);
+        }
+        vector<int> safe;
+        while (!q.empty()) {
+            int node = q.front();
+            q.pop();
+            safe.push_back(node);
+
+            for (int neighbor : revGraph[node]) {
+                indegree[neighbor]--;
+                if (indegree[neighbor] == 0)
+                    q.push(neighbor);
+            }
+        }
+        sort(safe.begin(), safe.end());
+        return safe;
+    }
+};
