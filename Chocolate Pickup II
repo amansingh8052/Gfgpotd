@@ -1,0 +1,83 @@
+# JAVA CODE 
+
+
+class Solution {
+    public int chocolatePickup(int[][] mat) {
+        int n = mat.length;
+        int[][][] dp = new int[n][n][n];
+        for (int[][] layer : dp)
+            for (int[] row : layer)
+                java.util.Arrays.fill(row, Integer.MIN_VALUE);
+        
+        dp[0][0][0] = mat[0][0] == -1 ? Integer.MIN_VALUE : mat[0][0];
+        
+        for (int r1 = 0; r1 < n; r1++) {
+            for (int c1 = 0; c1 < n; c1++) {
+                for (int r2 = 0; r2 < n; r2++) {
+                    int c2 = r1 + c1 - r2;
+                    if (c2 < 0 || c2 >= n) continue;
+                    
+                    if (mat[r1][c1] == -1 || mat[r2][c2] == -1) continue;
+
+                    if (r1 == 0 && c1 == 0 && r2 == 0) continue;
+
+                    int maxPrev = Integer.MIN_VALUE;
+                    if (r1 > 0 && r2 > 0) maxPrev = Math.max(maxPrev, dp[r1 - 1][c1][r2 - 1]);
+                    if (r1 > 0 && c2 > 0) maxPrev = Math.max(maxPrev, dp[r1 - 1][c1][r2]);
+                    if (c1 > 0 && r2 > 0) maxPrev = Math.max(maxPrev, dp[r1][c1 - 1][r2 - 1]);
+                    if (c1 > 0 && c2 > 0) maxPrev = Math.max(maxPrev, dp[r1][c1 - 1][r2]);
+
+                    if (maxPrev == Integer.MIN_VALUE) continue;
+
+                    int chocolates = mat[r1][c1];
+                    if (r1 != r2 || c1 != c2) chocolates += mat[r2][c2];
+
+                    dp[r1][c1][r2] = Math.max(dp[r1][c1][r2], maxPrev + chocolates);
+                }
+            }
+        }
+
+        return Math.max(0, dp[n - 1][n - 1][n - 1]);
+    }
+}
+
+
+
+# C++ CODE 
+
+
+class Solution {
+  public:
+    int chocolatePickup(vector<vector<int>> &mat) {
+        int n = mat.size();
+        vector<vector<vector<int>>> dp(n, vector<vector<int>>(n, vector<int>(n, -1e9)));
+        
+        dp[0][0][0] = (mat[0][0] == -1) ? -1e9 : mat[0][0];
+        
+        for (int r1 = 0; r1 < n; r1++) {
+            for (int c1 = 0; c1 < n; c1++) {
+                for (int r2 = 0; r2 < n; r2++) {
+                    int c2 = r1 + c1 - r2;
+                    if (c2 < 0 || c2 >= n) continue;
+                    if (mat[r1][c1] == -1 || mat[r2][c2] == -1) continue;
+                    if (r1 == 0 && c1 == 0 && r2 == 0) continue;
+
+                    int bestPrev = -1e9;
+                    if (r1 > 0 && r2 > 0) bestPrev = max(bestPrev, dp[r1 - 1][c1][r2 - 1]);
+                    if (r1 > 0 && c2 > 0) bestPrev = max(bestPrev, dp[r1 - 1][c1][r2]);
+                    if (c1 > 0 && r2 > 0) bestPrev = max(bestPrev, dp[r1][c1 - 1][r2 - 1]);
+                    if (c1 > 0 && c2 > 0) bestPrev = max(bestPrev, dp[r1][c1 - 1][r2]);
+
+                    if (bestPrev < 0) continue;
+
+                    int choco = mat[r1][c1];
+                    if (r1 != r2 || c1 != c2) choco += mat[r2][c2];
+
+                    dp[r1][c1][r2] = max(dp[r1][c1][r2], bestPrev + choco);
+                }
+            }
+        }
+
+        return max(0, dp[n-1][n-1][n-1]);
+    }
+};
