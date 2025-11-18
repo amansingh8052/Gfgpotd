@@ -1,0 +1,113 @@
+# JAVA CODE 
+
+
+class Solution {
+    static class Pair {
+        int node, time;
+        Pair(int n, int t) {
+            node = n;
+            time = t;
+        }
+    }
+
+    public int countPaths(int V, int[][] edges) {
+        final int MOD = 1000000007;
+        List<List<Pair>> graph = new ArrayList<>();
+        for (int i = 0; i < V; i++) graph.add(new ArrayList<>());
+
+        for (int[] e : edges) {
+            int u = e[0], v = e[1], t = e[2];
+            graph.get(u).add(new Pair(v, t));
+            graph.get(v).add(new Pair(u, t));
+        }
+        long[] dist = new long[V];
+        Arrays.fill(dist, Long.MAX_VALUE);
+        int[] ways = new int[V];
+        dist[0] = 0;
+        ways[0] = 1;
+
+        PriorityQueue<Pair> pq = new PriorityQueue<>((a, b) -> a.time - b.time);
+        pq.add(new Pair(0, 0));
+
+        while (!pq.isEmpty()) {
+            Pair current = pq.poll();
+            int node = current.node;
+            int time = current.time;
+
+            if (time > dist[node]) continue;
+
+            for (Pair nbr : graph.get(node)) {
+                int next = nbr.node;
+                long newTime = time + nbr.time;
+                if (newTime < dist[next]) {
+                    dist[next] = newTime;
+                    ways[next] = ways[node];
+                    pq.add(new Pair(next, (int)newTime));
+                }
+                else if (newTime == dist[next]) {
+                    ways[next] = (ways[next] + ways[node]) % MOD;
+                }
+            }
+        }
+
+        return ways[V - 1];
+    }
+}
+
+
+# C++ CODE 
+
+
+
+class Solution {
+public:
+    int countPaths(int V, vector<vector<int>>& edges) {
+        const int MOD = 1000000007;
+
+        vector<vector<pair<int,long long>>> graph(V);
+        for (auto &e : edges) {
+            int u = e[0], v = e[1];
+            long long t = e[2];
+            graph[u].push_back({v, t});
+            graph[v].push_back({u, t});
+        }
+
+        vector<long long> dist(V, LLONG_MAX);
+        vector<int> ways(V, 0);
+
+        dist[0] = 0;
+        ways[0] = 1;
+
+        priority_queue<
+            pair<long long,int>,
+            vector<pair<long long,int>>,
+            greater<pair<long long,int>>
+        > pq;
+
+        pq.push({0, 0});
+
+        while (!pq.empty()) {
+            auto [d, u] = pq.top();
+            pq.pop();
+
+            if (d > dist[u]) continue;
+
+            for (auto &nbr : graph[u]) {
+                int v = nbr.first;
+                long long w = nbr.second;
+                long long newDist = d + w;
+
+                if (newDist < dist[v]) {
+                    dist[v] = newDist;
+                    ways[v] = ways[u];
+                    pq.push({newDist, v});
+                }
+                else if (newDist == dist[v]) {
+                    ways[v] = (ways[v] + ways[u]) % MOD;
+                }
+            }
+        }
+
+        return ways[V - 1];
+    }
+};
