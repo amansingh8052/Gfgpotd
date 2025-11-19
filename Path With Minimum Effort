@@ -1,0 +1,107 @@
+# JAVA CODE 
+
+
+class Solution {
+    static class Cell {
+        int x, y, cost;
+        Cell(int x, int y, int cost) {
+            this.x = x;
+            this.y = y;
+            this.cost = cost;
+        }
+    }
+
+    public int minCostPath(int[][] mat) {
+        int n = mat.length, m = mat[0].length;
+
+        int[][] dist = new int[n][m];
+        for (int i = 0; i < n; i++)
+            Arrays.fill(dist[i], Integer.MAX_VALUE);
+
+        PriorityQueue<Cell> pq = new PriorityQueue<>((a, b) -> a.cost - b.cost);
+
+        dist[0][0] = 0;
+        pq.add(new Cell(0, 0, 0));
+
+        int[] dx = {0, 0, 1, -1};
+        int[] dy = {1, -1, 0, 0};
+
+        while (!pq.isEmpty()) {
+            Cell curr = pq.poll();
+            int x = curr.x, y = curr.y, effort = curr.cost;
+
+            if (x == n - 1 && y == m - 1)
+                return effort;
+
+            if (effort > dist[x][y]) continue;
+
+            for (int k = 0; k < 4; k++) {
+                int nx = x + dx[k];
+                int ny = y + dy[k];
+
+                if (nx >= 0 && ny >= 0 && nx < n && ny < m) {
+
+                    int newEffort = Math.max(effort, 
+                         Math.abs(mat[x][y] - mat[nx][ny]));
+
+                    if (newEffort < dist[nx][ny]) {
+                        dist[nx][ny] = newEffort;
+                        pq.add(new Cell(nx, ny, newEffort));
+                    }
+                }
+            }
+        }
+
+        return 0;
+    }
+}
+
+
+
+# C++ CODE 
+
+
+class Solution {
+public:
+    int minCostPath(vector<vector<int>>& mat) {
+        int n = mat.size();
+        int m = mat[0].size();
+
+        vector<vector<int>> dist(n, vector<int>(m, INT_MAX));
+
+        priority_queue<array<int, 3>, vector<array<int, 3>>, greater<array<int, 3>>> pq;
+
+        dist[0][0] = 0;
+        pq.push({0, 0, 0});
+
+        int dx[4] = {0, 0, 1, -1};
+        int dy[4] = {1, -1, 0, 0};
+
+        while (!pq.empty()) {
+            auto [cost, x, y] = pq.top();
+            pq.pop();
+
+            if (x == n - 1 && y == m - 1)
+                return cost;
+
+            if (cost > dist[x][y]) continue;
+
+            for (int k = 0; k < 4; k++) {
+                int nx = x + dx[k];
+                int ny = y + dy[k];
+
+                if (nx >= 0 && ny >= 0 && nx < n && ny < m) {
+
+                    int newCost = max(cost, abs(mat[x][y] - mat[nx][ny]));
+
+                    if (newCost < dist[nx][ny]) {
+                        dist[nx][ny] = newCost;
+                        pq.push({newCost, nx, ny});
+                    }
+                }
+            }
+        }
+
+        return 0;
+    }
+};
