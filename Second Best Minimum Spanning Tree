@@ -1,0 +1,147 @@
+# JAVA CODE 
+
+
+class Solution {
+
+    static class DSU {
+        int[] parent, rank;
+        DSU(int n) {
+            parent = new int[n];
+            rank = new int[n];
+            for (int i = 0; i < n; i++) parent[i] = i;
+        }
+        int find(int x) {
+            if (parent[x] != x)
+                parent[x] = find(parent[x]);
+            return parent[x];
+        }
+        boolean union(int a, int b) {
+            int x = find(a), y = find(b);
+            if (x == y) return false;
+            if (rank[x] < rank[y]) parent[x] = y;
+            else if (rank[y] < rank[x]) parent[y] = x;
+            else parent[y] = x; rank[x]++;
+            return true;
+        }
+    }
+
+    public int secondMST(int V, int[][] edges) {
+
+        int E = edges.length;
+        Arrays.sort(edges, (a, b) -> a[2] - b[2]);
+        DSU dsu = new DSU(V);
+        boolean[] used = new boolean[E];
+        int mstWeight = 0, count = 0;
+        for (int i = 0; i < E; i++) {
+            int u = edges[i][0], v = edges[i][1], w = edges[i][2];
+            if (dsu.union(u, v)) {
+                mstWeight += w;
+                used[i] = true;
+                count++;
+            }
+        }
+        if (count < V - 1) return -1;
+        int secondBest = Integer.MAX_VALUE;
+        for (int remove = 0; remove < E; remove++) {
+            if (!used[remove]) continue;
+            DSU temp = new DSU(V);
+            int total = 0, edgesUsed = 0;
+            for (int i = 0; i < E; i++) {
+                if (i == remove) continue;
+                int u = edges[i][0], v = edges[i][1], w = edges[i][2];
+                if (temp.union(u, v)) {
+                    total += w;
+                    edgesUsed++;
+                }
+            }
+            if (edgesUsed == V - 1 && total > mstWeight)
+                secondBest = Math.min(secondBest, total);
+        }
+        return secondBest == Integer.MAX_VALUE ? -1 : secondBest;
+    }
+}
+
+
+
+# C++ CODE
+
+
+class Solution {
+public:
+    struct DSU {
+        vector<int> parent, rank;
+        DSU(int n) {
+            parent.resize(n);
+            rank.assign(n, 0);
+            for (int i = 0; i < n; i++) parent[i] = i;
+        }
+        
+        int find(int x) {
+            if (parent[x] != x)
+                parent[x] = find(parent[x]);
+            return parent[x];
+        }
+        
+        bool unite(int a, int b) {
+            a = find(a);
+            b = find(b);
+            if (a == b) return false;
+            if (rank[a] < rank[b]) parent[a] = b;
+            else if (rank[b] < rank[a]) parent[b] = a;
+            else {
+                parent[b] = a;
+                rank[a]++;
+            }
+            return true;
+        }
+    };
+
+    int secondMST(int V, vector<vector<int>> &edges) {
+        int E = edges.size();
+        vector<array<int, 3>> e(E);
+
+        for (int i = 0; i < E; i++)
+            e[i] = {edges[i][0], edges[i][1], edges[i][2]};
+
+        sort(e.begin(), e.end(),
+             [](auto &a, auto &b){ return a[2] < b[2]; });
+
+        DSU dsu(V);
+        int mstWeight = 0;
+        vector<bool> used(E, false);
+
+        int mstEdges = 0;
+
+        for (int i = 0; i < E; i++) {
+            if (dsu.unite(e[i][0], e[i][1])) {
+                mstWeight += e[i][2];
+                used[i] = true;
+                mstEdges++;
+            }
+        }
+
+        if (mstEdges < V - 1) return -1;
+
+        int secondBest = INT_MAX;
+
+        for (int rem = 0; rem < E; rem++) {
+            if (!used[rem]) continue; 
+
+            DSU temp(V);
+            int weight = 0, cnt = 0;
+
+            for (int i = 0; i < E; i++) {
+                if (i == rem) continue;
+                if (temp.unite(e[i][0], e[i][1])) {
+                    weight += e[i][2];
+                    cnt++;
+                }
+            }
+
+            if (cnt == V - 1 && weight > mstWeight)
+                secondBest = min(secondBest, weight);
+        }
+
+        return (secondBest == INT_MAX ? -1 : secondBest);
+    }
+};
