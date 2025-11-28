@@ -1,0 +1,61 @@
+# JAVA CODE 
+
+class Solution {
+    public static ArrayList<Integer> subsetXOR(int n) {
+        ArrayList<Integer> ans = new ArrayList<>();
+
+        int totalXor = xor1ToX(n);
+        if (totalXor == n) {
+            for (int i = 1; i <= n; i++) ans.add(i);
+            return ans;
+        }
+        for (int i = 1; i <= n; i++) ans.add(i);
+        int required = totalXor ^ n;
+
+        ans.remove(Integer.valueOf(required));
+        return ans;
+    }
+
+    private static int xor1ToX(int x) {
+        if (x % 4 == 0) return x;
+        if (x % 4 == 1) return 1;
+        if (x % 4 == 2) return x + 1;
+        return 0;
+    }
+}
+
+
+# C++ CODE 
+
+class Solution {
+public:
+    vector<int> subsetXOR(int n) {
+        vector<int> ans;
+
+        int totalXor = xor1ToX(n);
+
+        if (totalXor == n) {
+            ans.reserve(n);
+            for (int i = 1; i <= n; i++)
+                ans.push_back(i);
+            return ans;
+        }
+
+        int required = totalXor ^ n;
+
+        for (int i = 1; i <= n; i++) {
+            if (i != required)
+                ans.push_back(i);
+        }
+
+        return ans;
+    }
+
+private:
+    int xor1ToX(int x) {
+        if (x % 4 == 0) return x;
+        if (x % 4 == 1) return 1;
+        if (x % 4 == 2) return x + 1;
+        return 0;
+    }
+};
