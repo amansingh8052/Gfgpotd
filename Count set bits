@@ -1,0 +1,46 @@
+# JAVA CODE 
+
+
+class Solution {
+    public static int countSetBits(int n) {
+        int count = 0;
+        for (int i = 0; (1 << i) <= n; i++) {
+
+            int powerOf2 = (1 << i);
+            int cycle = powerOf2 << 1;
+
+            int fullCycles = n / cycle;
+            count += fullCycles * powerOf2;
+
+            int remainder = n % cycle;
+            count += Math.max(0, remainder - powerOf2 + 1);
+        }
+        return count;
+    }
+}
+
+
+
+# C++ CODE 
+
+
+class Solution {
+  public:
+    int countSetBits(int n) {
+        int count = 0;
+
+        for (int i = 0; (1 << i) <= n; i++) {
+
+            int powerOf2 = (1 << i);
+            int cycle = powerOf2 << 1; 
+
+            int fullCycles = n / cycle;
+            count += fullCycles * powerOf2;
+
+            int remainder = n % cycle;
+            count += max(0, remainder - powerOf2 + 1);
+        }
+
+        return count;
+    }
+};
